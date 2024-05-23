@@ -1,15 +1,31 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect, useState} from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+    const navigate = useNavigate();
+    const [tipoUsuario, setTipoUsuario] = useState("Tipo de usuario");
+
+    useEffect(() => {
+        const localStorageDni = localStorage.getItem("dni");
+        const localStorageContrasenya = localStorage.getItem("contrasenya");
+        const localStorageTipoUsuario = localStorage.getItem("tipousuario");
+
+        if (localStorageDni !== null && localStorageContrasenya !== null && localStorageTipoUsuario !== null) {
+            navigate('/bienvenida');
+        }
+    }, []);
+
+
+
     return (
         <Fragment>
             <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container">
-                    <a className="navbar-brand" href="/client/src/paginas/registrarse">
-                        <img src="../../recursos/imagenes/uwu.png" alt="" width="45" height="45"/>
+                    <a className="navbar-brand" href="/">
+                        <img className="mx-3" src="../../recursos/imagenes/logotipo.svg" alt="" width="45" height="45"/>
                         Orerecursos compartidos
                     </a>
-                    <a className="navbar-text">Registrarte</a>
+                    <a className="navbar-text" href="/registrarse">Registrarte</a>
                 </div>
             </nav>
             <div className="contenedorCuerpo fixed-center">
@@ -17,10 +33,98 @@ function Home() {
                     <div className="card p-3">
                         <div className="row m-3" align="center">
                             <p className="text fs-1">Iniciar sesión</p>
-                            <input type="text" className="form-control my-3" placeholder="Correo electrónico"/>
-                            <input type="password" className="form-control my-3" placeholder="Contraseña"/>
-                            <button type="button"  onClick={ () =>
-                                window.location.href = "/registrarse"
+                            <div className="dropdown pb-2">
+                                <button className="btn btn-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    {tipoUsuario}
+                                </button>
+                                <ul className="dropdown-menu">
+                                    <li><a className="dropdown-item"
+                                           onClick={() => {
+                                               setTipoUsuario("Profesor")
+                                           }}>Profesor</a></li>
+                                    <li><a className="dropdown-item"
+                                           onClick={() => {
+                                               setTipoUsuario("Alumno")
+                                           }}>Alumno</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <input id={"correo"} type="text" className="form-control my-3"
+                                   placeholder="Correo electrónico"/>
+                            <input id={"contrasenya"} type="password" className="form-control my-3"
+                                   placeholder="Contraseña"/>
+                            <button type="button" onClick={() => {
+
+                                const correo = document.getElementById("correo").value;
+                                const contrasenya = document.getElementById("contrasenya").value;
+
+                                if (correo === "" || contrasenya === "") {
+                                    alert("Debe rellenar todos los campos");
+                                } else {
+
+                                    const myHeaders = new Headers();
+                                    myHeaders.append("Content-Type", "application/json");
+
+                                    if (tipoUsuario === "Profesor") {
+
+                                        fetch(`http://localhost:9000/profesor/existe/${correo}/${contrasenya}`, {
+                                            method: "GET",
+                                            headers: myHeaders,
+                                        }).then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Error al enviar los parámetros de la llamada' + response);
+                                            }
+                                            return response.json();
+                                        })
+                                            .then(data => {
+                                                console.log(data);
+                                                const usuario = data
+                                                localStorage.setItem("dni", JSON.stringify(usuario.dni));
+                                                localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
+                                                localStorage.setItem("tipousuario", JSON.stringify("profesor"));
+
+                                                navigate('/bienvenida');
+
+
+                                            })
+                                            .catch(error => {
+                                                alert(error);
+                                            });
+
+
+                                    } else if (tipoUsuario === "Alumno") {
+
+                                        fetch(`http://localhost:9000/alumno/existe/${correo}/${contrasenya}`, {
+                                            method: "GET",
+                                            headers: myHeaders,
+                                        }).then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Error al enviar los parámetros de la llamada' + response);
+                                            }
+                                            return response.json();
+                                        })
+                                            .then(data => {
+                                                console.log(data);
+                                                const usuario = data
+                                                localStorage.setItem("dni", JSON.stringify(usuario.dni));
+                                                localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
+                                                localStorage.setItem("tipousuario", JSON.stringify("alumno"));
+
+                                                navigate('/bienvenida');
+
+
+                                            })
+                                            .catch(error => {
+                                                alert(error);
+                                            });
+
+                                    } else {
+                                        alert("Selecciona un tipo de usuario");
+                                    }
+                                }
+                            }
                             } className="btn btn-outline-primary">Aceptar
                             </button>
                         </div>

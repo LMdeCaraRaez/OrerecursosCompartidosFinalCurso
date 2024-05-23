@@ -1,15 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Home from "./paginas/home";
 import Registrarse from "./paginas/registrarse";
+import Bienvenida from "./paginas/bienvenida";
+import Prueba from "./paginas/prueba";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
-        <React.StrictMode>
-            <Registrarse/>
-        </React.StrictMode>
+        <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/registrarse" element={<Registrarse/>}/>
+            <Route path="/bienvenida" element={<Bienvenida/>}/>
+            <Route path="/prueba" element={<Prueba/>}/>
+        </Routes>
     </Router>
 );
 
