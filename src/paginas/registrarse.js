@@ -79,9 +79,11 @@ function Registrarse() {
                                         "contrasenya": contrasenya,
                                         "telefono": telefono
                                     });
+                                    let tipousuario
 
 
                                     if (tipoUsuario === "Alumno"){
+                                        tipousuario = "alumno"
                                         console.log("El alumno es esto: " + body);
 
                                         fetch("http://localhost:9000/alumno/post", {
@@ -103,6 +105,7 @@ function Registrarse() {
                                                 alert('Ha ocurrido un error al enviar los datos del alumno');
                                             });
                                     } else {
+                                        tipousuario = "profesor"
                                         console.log("El profesor es esto: " + body);
 
                                         fetch("http://localhost:9000/profesor/post", {
@@ -124,6 +127,20 @@ function Registrarse() {
                                                 alert('Ha ocurrido un error al enviar los datos del alumno');
                                             });
                                     }
+
+
+
+                                    fetch(`http://localhost:9000/enviarcorreoverificacion/${correo}/${tipousuario}`, {
+                                        method: "POST",
+                                    }).then(res => res.text()
+                                        .then(res => {
+                                            console.log(res)
+
+                                            alert("Se ha enviado un correo de verificación")
+                                        })
+                                        .catch(err => console.error(err)))
+
+
                                 }
                             } else alert("Debes seleccionar un tipo de usuario")
 

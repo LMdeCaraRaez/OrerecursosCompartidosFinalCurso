@@ -79,13 +79,16 @@ function Home() {
                                             return response.json();
                                         })
                                             .then(data => {
-                                                console.log(data);
                                                 const usuario = data
-                                                localStorage.setItem("dni", JSON.stringify(usuario.dni));
-                                                localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
-                                                localStorage.setItem("tipousuario", JSON.stringify("profesor"));
+                                                if (data.validado === 1) {
+                                                    localStorage.setItem("dni", JSON.stringify(usuario.dni));
+                                                    localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
+                                                    localStorage.setItem("tipousuario", JSON.stringify("profesor"));
 
-                                                navigate('/bienvenida');
+                                                    navigate('/bienvenida');
+                                                } else {
+                                                    alert("Debes validar tu correo para iniciar sesión!!!")
+                                                }
 
 
                                             })
@@ -107,12 +110,16 @@ function Home() {
                                         })
                                             .then(data => {
                                                 console.log(data);
-                                                const usuario = data
-                                                localStorage.setItem("dni", JSON.stringify(usuario.dni));
-                                                localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
-                                                localStorage.setItem("tipousuario", JSON.stringify("alumno"));
+                                                if (data.validado === 1) {
+                                                    const usuario = data
+                                                    localStorage.setItem("dni", JSON.stringify(usuario.dni));
+                                                    localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
+                                                    localStorage.setItem("tipousuario", JSON.stringify("alumno"));
 
-                                                navigate('/bienvenida');
+                                                    navigate('/bienvenida');
+                                                } else {
+                                                    alert("Debes validar tu correo para iniciar sesión!!!")
+                                                }
 
 
                                             })

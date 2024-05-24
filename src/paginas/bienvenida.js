@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, {Fragment, useEffect, useState} from "react";
+import {useNavigate} from 'react-router-dom';
 
 function Bienvenida() {
     const navigate = useNavigate();
@@ -9,6 +9,7 @@ function Bienvenida() {
     const [fichero, setFichero] = useState(null);
 
     const enviarImagen = () => {
+        const localStorageTipoUsuario = JSON.parse(localStorage.getItem("tipousuario"));
         console.log(fichero)
         if (!fichero) {
             alert("Debes de subir un archivo");
@@ -18,7 +19,7 @@ function Bienvenida() {
         const formData = new FormData();
         formData.append("image", fichero);
 
-        fetch("http://localhost:9000/images/post", {
+        fetch(`http://localhost:9000/images/post/${userData.dni}/${localStorageTipoUsuario}`, {
             method: "POST",
             body: formData,
         }).then(res => res.text()
@@ -54,7 +55,7 @@ function Bienvenida() {
                 redirect: "follow"
             };
 
-            fetch("http://localhost:9000/images/get/14", requestOptions)
+            fetch(`http://localhost:9000/images/get/${userData.imagenId}`, requestOptions)
                 .then((response) => response.text())
                 .then((result) => {
                     setImage(result)
@@ -67,18 +68,21 @@ function Bienvenida() {
 
     return (
         <Fragment>
-            <div className="bg-secondary d-flex flex-column" style={{ minHeight: '100vh' }}>
+            <div className="bg-secondary d-flex flex-column" style={{minHeight: '100vh'}}>
                 <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
                     <div className="container">
                         <a className="navbar-brand">
-                            <img className="mx-3" src={`http://localhost:9000/logotipo.svg`} alt="" width="45" height="45" />
+                            <img className="mx-3" src={`http://localhost:9000/logotipo.svg`} alt="" width="45"
+                                 height="45"/>
                             Bienvenido {userData.nombre}
                         </a>
                         <a className="navbar-text" href="/" onClick={() => localStorage.clear()}>Cerrar sesión</a>
                     </div>
                 </nav>
 
-                <div className="contenedorCuerpo bg-secondary flex-grow-0 d-flex justify-content-center align-items-center" style={{ marginTop: '15px', marginBottom: '15px' }}>
+                <div
+                    className="contenedorCuerpo bg-secondary flex-grow-0 d-flex justify-content-center align-items-center"
+                    style={{marginTop: '15px', marginBottom: '15px'}}>
                     <div className="card m-3"
                          style={{width: '80%', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <img src={`http://localhost:9000/${image}`} className="rounded" alt="" width="150"
@@ -101,7 +105,7 @@ function Bienvenida() {
 
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom p-0">
                     <div className="container">
-                        <p className="navbar-text m-0" style={{ textAlign: "center", width: "100%", fontSize: 14 }}>
+                        <p className="navbar-text m-0" style={{textAlign: "center", width: "100%", fontSize: 14}}>
                             Luis Miguel de Cara Ráez - IES Oretania
                         </p>
                     </div>
@@ -126,7 +130,13 @@ function Bienvenida() {
                 return response.json();
             })
             .then(data => {
-                setUserData(data);
+                console.log(data.validado);
+                if (data.validado === 0) {
+                    alert('Debes validar el correo para iniciar sesion!!!');
+                    navigate('/');
+                } else {
+                    setUserData(data);
+                }
             })
             .catch(error => {
                 alert("Ha ocurrido un error: " + error);
