@@ -6,6 +6,7 @@ import Registrarse from "./paginas/registrarse";
 import Bienvenida from "./paginas/bienvenida";
 import Prueba from "./paginas/prueba";
 import CorreoVerificado from "./paginas/correoVerificado";
+import CrearArticuloPrestable from "./paginas/crearArticuloPrestable";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +16,7 @@ root.render(
             <Route path="/registrarse" element={<Registrarse/>}/>
             <Route path="/bienvenida" element={<Bienvenida/>}/>
             <Route path="/prueba" element={<Prueba/>}/>
+            <Route path="/crear/articulo" element={<CrearArticuloPrestable/>}/>
             <Route path="/correo/:correoaverificar/:tipousuario" element={<CorreoVerificado/>}/>
         </Routes>
     </Router>

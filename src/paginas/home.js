@@ -22,7 +22,7 @@ function Home() {
             <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container">
                     <a className="navbar-brand" href="/">
-                        <img className="mx-3" src="../../recursos/imagenes/logotipo.svg" alt="" width="45" height="45"/>
+                        <img className="mx-3" src="http://localhost:9000/logotipo.svg" alt="" width="45" height="45"/>
                         Orerecursos compartidos
                     </a>
                     <a className="navbar-text" href="/registrarse">Registrarte</a>
@@ -80,6 +80,7 @@ function Home() {
                                         })
                                             .then(data => {
                                                 const usuario = data
+                                                console.log(data)
                                                 if (data.validado === 1) {
                                                     localStorage.setItem("dni", JSON.stringify(usuario.dni));
                                                     localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));

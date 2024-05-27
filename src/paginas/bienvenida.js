@@ -1,15 +1,18 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 
+
 function Bienvenida() {
-    const navigate = useNavigate();
     const [userData, setUserData] = useState({});
     const [image, setImage] = useState("");
+    const localStorageDni = JSON.parse(localStorage.getItem("dni"));
+    const localStorageContrasenya = JSON.parse(localStorage.getItem("contrasenya"));
+    const localStorageTipoUsuario = JSON.parse(localStorage.getItem("tipousuario"));
+    const navigate = useNavigate();
 
     const [fichero, setFichero] = useState(null);
 
     const enviarImagen = () => {
-        const localStorageTipoUsuario = JSON.parse(localStorage.getItem("tipousuario"));
         console.log(fichero)
         if (!fichero) {
             alert("Debes de subir un archivo");
@@ -36,9 +39,7 @@ function Bienvenida() {
     }
 
     useEffect(() => {
-        const localStorageDni = JSON.parse(localStorage.getItem("dni"));
-        const localStorageContrasenya = JSON.parse(localStorage.getItem("contrasenya"));
-        const localStorageTipoUsuario = JSON.parse(localStorage.getItem("tipousuario"));
+
 
         if (!(localStorageDni !== null && localStorageContrasenya !== null && localStorageTipoUsuario !== null)) {
             navigate('/');
@@ -88,7 +89,7 @@ function Bienvenida() {
                         <img src={`http://localhost:9000/${image}`} className="rounded" alt="" width="150"
                              height="150"/>
                         <div className="mx-3" style={{textAlign: 'left'}}>
-                            <h2>{userData.correo_electronico}</h2>
+                            <h2>{userData.correo_electronico} - {localStorageTipoUsuario}</h2>
                             <p>{userData.nombre + " " + userData.apellidos}</p>
                         </div>
                         <div className=""
@@ -99,9 +100,10 @@ function Bienvenida() {
                                     onClick={enviarImagen}> Guardar Imagen
                             </button>
                         </div>
-
                     </div>
                 </div>
+
+                {filaBotones(localStorageTipoUsuario, navigate)}
 
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom p-0">
                     <div className="container">
@@ -116,9 +118,7 @@ function Bienvenida() {
 
     function cargarDatosUsuario(localStorageDni, localStorageContrasenya, localStorageTipoUsuario) {
 
-        const url = localStorageTipoUsuario === "profesor"
-            ? `http://localhost:9000/profesor/detalle/${localStorageDni}/${localStorageContrasenya}`
-            : `http://localhost:9000/alumno/detalle/${localStorageDni}/${localStorageContrasenya}`;
+        const url = localStorageTipoUsuario === "profesor" ? `http://localhost:9000/profesor/detalle/${localStorageDni}/${localStorageContrasenya}` : `http://localhost:9000/alumno/detalle/${localStorageDni}/${localStorageContrasenya}`;
 
         fetch(url, {
             method: "GET",
@@ -141,6 +141,53 @@ function Bienvenida() {
             .catch(error => {
                 alert("Ha ocurrido un error: " + error);
             });
+    }
+}
+
+
+function filaBotones(tipoAlumno, navigate) {
+
+    switch (tipoAlumno) {
+        case "profesor":
+            return (
+                <div className="col mx-5 d-flex justify-content-center align-items-center">
+
+                    <button className="btn btn-primary mx-4" style={{width: '20%'}}>
+                        <div className="row p-2">
+                            <p>Prestamos</p>
+                            <img className="" src={`http://localhost:9000/lista.svg`} alt="" width="45" height="45"/>
+                        </div>
+                    </button>
+
+                    <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
+                        () => navigate("/crear/articulo")
+                    }>
+                        <div className="row p-2">
+                            <p>Objetos prestables</p>
+                            <img className="" src={`http://localhost:9000/subir.svg`} alt="" width="45" height="45"/>
+                        </div>
+                    </button>
+
+                    <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={() => navigate("/prueba")}>
+                        <div className="row p-2">
+                            <p>Crear un nuevo préstamo</p>
+                            <img className="" src={`http://localhost:9000/crear.svg`} alt="" width="45" height="45"/>
+                        </div>
+                    </button>
+                </div>
+            )
+        case "alumno":
+            return (
+                <div className="col mx-5 d-flex justify-content-center align-items-center">
+
+                    <button className="btn btn-primary mx-4" style={{width: '20%'}}>
+                        <div className="row p-2">
+                            <p>Ver mis propios pedidos</p>
+                             <img className="" src={`http://localhost:9000/lista.svg`} alt="" width="45" height="45"/>
+                        </div>
+                    </button>
+                </div>
+            )
     }
 }
 
