@@ -1,5 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
+import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 
 function Home() {
     const navigate = useNavigate();
@@ -22,8 +23,8 @@ function Home() {
             <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container">
                     <a className="navbar-brand" href="/">
-                        <img className="mx-3" src="http://localhost:9000/logotipo.svg" alt="" width="45" height="45"/>
-                        Orerecursos compartidos
+                        <img className="mx-3" src={BASEAPI + "/logotipo.svg"} alt="" width="45" height="45"/>
+                        {NOMBREAPP}
                     </a>
                     <a className="navbar-text" href="/registrarse">Registrarte</a>
                 </div>
@@ -69,7 +70,7 @@ function Home() {
 
                                     if (tipoUsuario === "Profesor") {
 
-                                        fetch(`http://localhost:9000/profesor/existe/${correo}/${contrasenya}`, {
+                                        fetch(BASEAPI + `/profesor/existe/${correo}/${contrasenya}`, {
                                             method: "GET",
                                             headers: myHeaders,
                                         }).then(response => {
@@ -100,7 +101,7 @@ function Home() {
 
                                     } else if (tipoUsuario === "Alumno") {
 
-                                        fetch(`http://localhost:9000/alumno/existe/${correo}/${contrasenya}`, {
+                                        fetch(BASEAPI + `/alumno/existe/${correo}/${contrasenya}`, {
                                             method: "GET",
                                             headers: myHeaders,
                                         }).then(response => {

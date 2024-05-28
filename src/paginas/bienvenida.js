@@ -1,5 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom';
+import {BASEAPI} from "../modelos/constantes";
 
 
 function Bienvenida() {
@@ -22,7 +23,7 @@ function Bienvenida() {
         const formData = new FormData();
         formData.append("image", fichero);
 
-        fetch(`http://localhost:9000/images/post/${userData.dni}/${localStorageTipoUsuario}`, {
+        fetch(BASEAPI + `/images/post/${userData.dni}/${localStorageTipoUsuario}`, {
             method: "POST",
             body: formData,
         }).then(res => res.text()
@@ -56,7 +57,7 @@ function Bienvenida() {
                 redirect: "follow"
             };
 
-            fetch(`http://localhost:9000/images/get/${userData.imagenId}`, requestOptions)
+            fetch(BASEAPI + `/images/get/${userData.imagenId}`, requestOptions)
                 .then((response) => response.text())
                 .then((result) => {
                     setImage(result)
@@ -73,7 +74,7 @@ function Bienvenida() {
                 <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
                     <div className="container">
                         <a className="navbar-brand">
-                            <img className="mx-3" src={`http://localhost:9000/logotipo.svg`} alt="" width="45"
+                            <img className="mx-3" src={BASEAPI + `/logotipo.svg`} alt="" width="45"
                                  height="45"/>
                             Bienvenido {userData.nombre}
                         </a>
@@ -86,7 +87,7 @@ function Bienvenida() {
                     style={{marginTop: '15px', marginBottom: '15px'}}>
                     <div className="card m-3"
                          style={{width: '80%', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <img src={`http://localhost:9000/${image}`} className="rounded" alt="" width="150"
+                        <img src={BASEAPI + `/${image}`} className="rounded" alt="" width="150"
                              height="150"/>
                         <div className="mx-3" style={{textAlign: 'left'}}>
                             <h2>{userData.correo_electronico} - {localStorageTipoUsuario}</h2>
@@ -118,7 +119,7 @@ function Bienvenida() {
 
     function cargarDatosUsuario(localStorageDni, localStorageContrasenya, localStorageTipoUsuario) {
 
-        const url = localStorageTipoUsuario === "profesor" ? `http://localhost:9000/profesor/detalle/${localStorageDni}/${localStorageContrasenya}` : `http://localhost:9000/alumno/detalle/${localStorageDni}/${localStorageContrasenya}`;
+        const url = localStorageTipoUsuario === "profesor" ? BASEAPI + `/profesor/detalle/${localStorageDni}/${localStorageContrasenya}` : BASEAPI + `/alumno/detalle/${localStorageDni}/${localStorageContrasenya}`;
 
         fetch(url, {
             method: "GET",
@@ -155,23 +156,23 @@ function filaBotones(tipoAlumno, navigate) {
                     <button className="btn btn-primary mx-4" style={{width: '20%'}}>
                         <div className="row p-2">
                             <p>Prestamos</p>
-                            <img className="" src={`http://localhost:9000/lista.svg`} alt="" width="45" height="45"/>
+                            <img className="" src={BASEAPI + "/lista.svg"} alt="" width="45" height="45"/>
                         </div>
                     </button>
 
                     <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
-                        () => navigate("/crear/articulo")
+                        () => navigate("/ver/articulos")
                     }>
                         <div className="row p-2">
                             <p>Objetos prestables</p>
-                            <img className="" src={`http://localhost:9000/subir.svg`} alt="" width="45" height="45"/>
+                            <img className="" src={BASEAPI + "/subir.svg"} alt="" width="45" height="45"/>
                         </div>
                     </button>
 
                     <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={() => navigate("/prueba")}>
                         <div className="row p-2">
                             <p>Crear un nuevo préstamo</p>
-                            <img className="" src={`http://localhost:9000/crear.svg`} alt="" width="45" height="45"/>
+                            <img className="" src={BASEAPI + `/crear.svg`} alt="" width="45" height="45"/>
                         </div>
                     </button>
                 </div>
@@ -183,7 +184,7 @@ function filaBotones(tipoAlumno, navigate) {
                     <button className="btn btn-primary mx-4" style={{width: '20%'}}>
                         <div className="row p-2">
                             <p>Ver mis propios pedidos</p>
-                             <img className="" src={`http://localhost:9000/lista.svg`} alt="" width="45" height="45"/>
+                            <img className="" src={BASEAPI + `/lista.svg`} alt="" width="45" height="45"/>
                         </div>
                     </button>
                 </div>

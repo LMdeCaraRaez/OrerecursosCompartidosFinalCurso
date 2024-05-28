@@ -16,7 +16,7 @@ root.render(
             <Route path="/registrarse" element={<Registrarse/>}/>
             <Route path="/bienvenida" element={<Bienvenida/>}/>
             <Route path="/prueba" element={<Prueba/>}/>
-            <Route path="/crear/articulo" element={<CrearArticuloPrestable/>}/>
+            <Route path="/ver/articulos" element={<CrearArticuloPrestable/>}/>
             <Route path="/correo/:correoaverificar/:tipousuario" element={<CorreoVerificado/>}/>
         </Routes>
     </Router>

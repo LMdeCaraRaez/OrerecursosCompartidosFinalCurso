@@ -1,5 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
+import {BASEAPI} from "../modelos/constantes";
 
 
 function CorreoVerificado() {
@@ -11,7 +12,7 @@ function CorreoVerificado() {
 
     useEffect(() => {
 
-        fetch(`http://localhost:9000/verificarcorreo/${correoaverificar}/${tipousuario}`, {
+        fetch(BASEAPI + `/verificarcorreo/${correoaverificar}/${tipousuario}`, {
             method: "POST",
         }).then(res => res.text()
             .then(res => {

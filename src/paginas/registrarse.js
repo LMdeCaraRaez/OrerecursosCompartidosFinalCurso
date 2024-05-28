@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from "react";
+import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 
 function Registrarse() {
     const [tipoUsuario, setTipoUsuario] = useState("Tipo de usuario");
@@ -8,8 +9,8 @@ function Registrarse() {
             <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container">
                     <a className="navbar-brand" href="/">
-                        <img className="mx-3" src="http://localhost:9000/logotipo.svg" alt="" width={"45"} height={"45"}/>
-                        Orerecursos compartidos
+                        <img className="mx-3" src={BASEAPI + "/logotipo.svg"} alt="" width={"45"} height={"45"}/>
+                        {NOMBREAPP}
                     </a>
                 </div>
             </nav>
@@ -86,7 +87,7 @@ function Registrarse() {
                                         tipousuario = "alumno"
                                         console.log("El alumno es esto: " + body);
 
-                                        fetch("http://localhost:9000/alumno/post", {
+                                        fetch(BASEAPI + "/alumno/post", {
                                             method: "POST",
                                             headers: myHeaders,
                                             body: body
@@ -108,7 +109,7 @@ function Registrarse() {
                                         tipousuario = "profesor"
                                         console.log("El profesor es esto: " + body);
 
-                                        fetch("http://localhost:9000/profesor/post", {
+                                        fetch( BASEAPI + "/profesor/post", {
                                             method: "POST",
                                             headers: myHeaders,
                                             body: body
@@ -128,9 +129,7 @@ function Registrarse() {
                                             });
                                     }
 
-
-
-                                    fetch(`http://localhost:9000/enviarcorreoverificacion/${correo}/${tipousuario}`, {
+                                    fetch(BASEAPI + `/enviarcorreoverificacion/${correo}/${tipousuario}`, {
                                         method: "POST",
                                     }).then(res => res.text()
                                         .then(res => {
@@ -139,7 +138,6 @@ function Registrarse() {
                                             alert("Se ha enviado un correo de verificación")
                                         })
                                         .catch(err => console.error(err)))
-
 
                                 }
                             } else alert("Debes seleccionar un tipo de usuario")
