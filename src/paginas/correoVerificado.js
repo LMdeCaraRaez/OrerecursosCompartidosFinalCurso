@@ -16,7 +16,6 @@ function CorreoVerificado() {
             method: "POST",
         }).then(res => res.text()
             .then(res => {
-                console.log(res)
                 setResultado(res)
             })
             .catch(err => console.error(err)))

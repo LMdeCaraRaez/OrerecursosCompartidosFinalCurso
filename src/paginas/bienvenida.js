@@ -153,7 +153,9 @@ function filaBotones(tipoAlumno, navigate) {
             return (
                 <div className="col mx-5 d-flex justify-content-center align-items-center">
 
-                    <button className="btn btn-primary mx-4" style={{width: '20%'}}>
+                    <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
+                        () => navigate("/ver/prestamos")
+                    }>
                         <div className="row p-2">
                             <p>Prestamos</p>
                             <img className="" src={BASEAPI + "/lista.svg"} alt="" width="45" height="45"/>
