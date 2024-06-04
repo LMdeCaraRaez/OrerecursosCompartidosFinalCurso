@@ -5,7 +5,6 @@ import { DataGrid } from '@mui/x-data-grid';
 
 function VerMateriales() {
     const [materiales, setMateriales] = useState([]);
-    const [imagenes, setImagenes] = useState({}); // Array de las imagenes que añado en setImagenes imagenes
     const localStorageDni = JSON.parse(localStorage.getItem("dni"));
     const navigate = useNavigate();
     const [filasTabla, setFilasTabla] = React.useState([]);
@@ -26,15 +25,6 @@ function VerMateriales() {
             }}
     ];
 
-    const estiloFila = (params) => {
-        const fila = params.row;
-        console.log("La fila es: " + fila)
-        return {
-            backgroundColor: fila.estado === 'En mal estado'? 'rgba(255, 0, 0, 0.1)' : 'inherit',
-            color: fila.precio < 100? 'red' : 'inherit',
-        };
-    };
-
     // Use effect que carga los datos del usuario
     useEffect(() => {
         fetch(BASEAPI + `/material/usuario/${localStorageDni}`, {
@@ -44,29 +34,9 @@ function VerMateriales() {
             .then((result) => {
                 setMateriales(result);
                 setFilasTabla(result);
-                result.forEach(material => {
-                    if (material.imagenId) {
-                        buscarImagen(material.imagenId);
-                    }
-                });
             })
             .catch((error) => console.error(error));
     }, [localStorageDni]);
-
-    function buscarImagen(imagenId) {
-        fetch(BASEAPI + `/images/get/${imagenId}`, {
-            method: "GET"
-        }).then((response) => response.text())
-            .then((result) => {
-                //
-                setImagenes(prevState => ({
-                    // Copia todas las imagenes que ya estaban y añade la nueva del resultado
-                    ...prevState,
-                    [imagenId]: result
-                }));
-            })
-            .catch((error) => console.error(error));
-    }
 
     return (
         <Fragment>
@@ -101,9 +71,9 @@ function VerMateriales() {
                                 columns={columnasTabla}
                                 pageSize={5}
                                 checkboxSelection
-                                onCellDoubleClick={(params, event) => {
-                                    // Manejar el doble clic en la celda aquí
+                                onCellDoubleClick={(params) => {
                                     console.log('Se ha hecho doble click en la celda: ', params);
+                                    navigate("/detalle/articulo/" + params.row.id)
                                 }}
                             />
                         </div>

@@ -104,8 +104,7 @@ function EditarMaterial() {
                                 editarMaterial(nombre, estado, descripcion, ubicacion, precio)
 
 
-                            }}>Enviar
-                                Aceptar edición
+                            }}>Aceptar edición
                             </button>
                             <div className="mb-5"/>
                         </div>

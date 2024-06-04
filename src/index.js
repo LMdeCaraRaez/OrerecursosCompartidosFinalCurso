@@ -10,6 +10,7 @@ import VerMateriales from "./paginas/verMateriales";
 import CrearMaterial from "./paginas/anyadirMaterial";
 import EditarMaterial from "./paginas/editarMaterial";
 import VerPrestamos from "./paginas/verPrestamos";
+import DetalleMaterial from "./paginas/detalleMaterial";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,6 +24,7 @@ root.render(
             <Route path="/ver/prestamos" element={<VerPrestamos/>}/>
             <Route path="/editar/articulo/:articuloId" element={<EditarMaterial/>}/>
             <Route path="/crear/articulos" element={<CrearMaterial/>}/>
+            <Route path="/detalle/articulo/:articuloId" element={<DetalleMaterial/>}/>
             <Route path="/correo/:correoaverificar/:tipousuario" element={<CorreoVerificado/>}/>
         </Routes>
     </Router>
