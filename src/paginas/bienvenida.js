@@ -104,7 +104,7 @@ function Bienvenida() {
                     </div>
                 </div>
 
-                {filaBotones(localStorageTipoUsuario, navigate)}
+                {filaBotones(localStorageTipoUsuario, navigate, localStorageDni)}
 
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom p-0">
                     <div className="container">
@@ -146,7 +146,7 @@ function Bienvenida() {
 }
 
 
-function filaBotones(tipoAlumno, navigate) {
+function filaBotones(tipoAlumno, navigate, profesorId) {
 
     switch (tipoAlumno) {
         case "profesor":
@@ -154,7 +154,7 @@ function filaBotones(tipoAlumno, navigate) {
                 <div className="col mx-5 d-flex justify-content-center align-items-center">
 
                     <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
-                        () => navigate("/ver/prestamos")
+                        () => navigate("/ver/prestamos/profesor/" + profesorId)
                     }>
                         <div className="row p-2">
                             <p>Prestamos</p>

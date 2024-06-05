@@ -1,7 +1,9 @@
+import localeText from "../modelos/constantes"
 import React, { Fragment, useEffect, useState } from "react";
-import { BASEAPI, NOMBREAPP } from "../modelos/constantes";
+import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 import { useNavigate } from "react-router-dom";
-import { DataGrid } from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
+
 
 function VerMateriales() {
     const [materiales, setMateriales] = useState([]);
@@ -75,6 +77,7 @@ function VerMateriales() {
                                     console.log('Se ha hecho doble click en la celda: ', params);
                                     navigate("/detalle/articulo/" + params.row.id)
                                 }}
+                                localeText={localeText}
                             />
                         </div>
                     )}

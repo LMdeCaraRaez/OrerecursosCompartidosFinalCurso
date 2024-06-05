@@ -13,11 +13,20 @@ function DetalleMaterial() {
         fetch(BASEAPI + "/material/materialid/" + articuloId, {method: "GET"})
             .then((response) => response.json())
             .then((result) => {
-                console.log(result)
                 setMaterial(result)
             })
             .catch((error) => alert(error));
     }, [articuloId]);
+
+    // Solo uso esta llamada para guardar la imagen en la base de datos en dbimages en caso de q no lo esté
+    useEffect(() => {
+
+        fetch(BASEAPI + "/images/get/" + material.imagenId, {method: "GET"})
+            .then((response) => response.text())
+            .then((result) => {
+            })
+            .catch((error) => alert(error));
+    }, [material]);
 
 
     return (
@@ -55,7 +64,6 @@ function DetalleMaterial() {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
                     <div className="container">
