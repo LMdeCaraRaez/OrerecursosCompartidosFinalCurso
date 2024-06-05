@@ -4,22 +4,18 @@ import {useParams} from "react-router-dom";
 
 
 function AnyadirPrestamo() {
-    let {profesorId} = useParams();
-    const [materiales, setMateriales] = useState([]);
+    let {profesorId, materialId} = useParams();
+    const [material, setMaterial] = useState({});
 
 
     useEffect(() => {
-        fetch(BASEAPI + `/material/usuario/${profesorId}`, {
-            method: "GET",
-        })
+        fetch(BASEAPI + "/material/materialid/" + materialId, {method: "GET"})
             .then((response) => response.json())
             .then((result) => {
-                console.log(profesorId);
-                setMateriales(result);
-                console.log(result)
+                setMaterial(result)
             })
-            .catch((error) => console.error(error));
-    }, [profesorId]);
+            .catch((error) => alert(error));
+    }, [materialId]);
 
     return (
         <Fragment>
@@ -36,7 +32,7 @@ function AnyadirPrestamo() {
                 <div className="contenedorCuerpo" align="center" style={{marginTop: '15px', marginBottom: '15px'}}>
                     <div className="container contenedorCentral m-3">
                         <div className="row m-2">
-                            <p className="fs-1 fw-bold">Crear Préstamo</p>
+                            <p className="fs-1 fw-bold">Crear Préstamo de <u>{material.nombre}</u></p>
                         </div>
                     </div>
 
@@ -45,9 +41,8 @@ function AnyadirPrestamo() {
                         <input id={"fechaDevolucion"} type="date" className="form-control my-3  bg-primary" placeholder="Fecha de devolucion" style={{width: '700px'}}/>
                         <input id={"utilidad"} type="text" className="form-control my-3  bg-primary" placeholder="Utilidad" style={{width: '700px'}}/>
                         <input id={"unidades"} type="number" min="1" className="form-control my-3  bg-primary" placeholder="Unidades" style={{width: '700px'}}/>
-                        <input id={"material"} type="text" className="form-control my-3  bg-primary" placeholder="Material?" style={{width: '700px'}}/>
-                        <input id={"dniAlumno"} type="text" className="form-control my-3  bg-primary" placeholder="Dni del alumno" style={{width: '700px'}}/>
-                        {materiales[0].nombre}
+                        <input id={"dniAlumno"} type="text" className="form-control my-3  bg-primary" placeholder="Dni del alumno a prestar" style={{width: '700px'}}/>
+                        <input id={"imagen"} type="file" className="form-control my-3  bg-primary" placeholder="Fotografías iniciales" style={{width: '700px'}}/>
                     </div>
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom p-0">

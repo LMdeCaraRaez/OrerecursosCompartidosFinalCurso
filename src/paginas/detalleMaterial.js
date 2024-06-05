@@ -7,6 +7,7 @@ function DetalleMaterial() {
     const [material, setMaterial] = useState({});
     let {articuloId} = useParams();
     const navigate = useNavigate();
+    const localStorageDni = JSON.parse(localStorage.getItem("dni"));
 
     useEffect(() => {
 
@@ -57,22 +58,28 @@ function DetalleMaterial() {
                                 </div>
                             </div>
                             <div className="col d-flex flex-column align-items-center">
-                                <img src={BASEAPI + "/" + material.imagenId + "-" + material.name} className="img my-2 rounded border border-primary border-2" style={{width:'40%'}}/>
+                                <img src={BASEAPI + "/" + material.imagenId + "-" + material.name}
+                                     className="img my-2 rounded border border-primary border-2"
+                                     style={{width: '40%'}}/>
                                 <button className="btn btn-primary mt-auto" onClick={() => {
                                     navigate("/editar/articulo/" + articuloId)
-                                }}>Editar Material</button>
+                                }}>Editar Material
+                                </button>
                             </div>
                         </div>
+                        <button className="btn btn-primary mt-3" style={{width: "20%"}} onClick={() => {
+                            navigate('/crear/prestamo/' + localStorageDni + "/" + articuloId)
+                        }}>Crear préstamo
+                        </button>
                     </div>
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
                     <div className="container">
-                        <p className="navbar-text m-0" style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis
+                    <p className="navbar-text m-0" style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis
                             Miguel de Cara Ráez - IES Oretania</p>
                     </div>
                 </nav>
             </div>
-
         </Fragment>
     )
 }

@@ -26,7 +26,7 @@ root.render(
             <Route path="/ver/prestamos/profesor/:profesorId" element={<VerPrestamos/>}/>
             <Route path="/editar/articulo/:articuloId" element={<EditarMaterial/>}/>
             <Route path="/crear/articulos" element={<CrearMaterial/>}/>
-            <Route path="/crear/prestamo/:profesorId" element={<AnyadirPrestamo/>}/>
+            <Route path="/crear/prestamo/:profesorId/:materialId" element={<AnyadirPrestamo/>}/>
             <Route path="/detalle/articulo/:articuloId" element={<DetalleMaterial/>}/>
             <Route path="/correo/:correoaverificar/:tipousuario" element={<CorreoVerificado/>}/>
         </Routes>

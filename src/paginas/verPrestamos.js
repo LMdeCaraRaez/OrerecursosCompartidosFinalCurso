@@ -22,10 +22,7 @@ function VerPrestamos() {
                 <div
                     className="contenedorCuerpo bg-secondary flex-grow-0 d-flex justify-content-center align-items-center">
                     <div className="contenedor-interior d-flex justify-content-center align-items-center">
-                        <button className="btn btn-primary mt-3 px-5 py-4" onClick={() => navigate("/crear/prestamo/" + profesorId)}>
-                            <p>Crear un nuevo préstamo</p>
-                            <img className="" src={BASEAPI + `/crear.svg`} alt="" width="45" height="45"/>
-                        </button>
+
                     </div>
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
