@@ -1,11 +1,14 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 import {useParams} from "react-router-dom";
+import { format } from 'date-fns';
 
 
 function AnyadirPrestamo() {
     let {profesorId, materialId} = useParams();
     const [material, setMaterial] = useState({});
+    const [ficheros, setFichero] = useState([]);
+    const seleccionarImagenes = e => {setFichero([...e.target.files])}
 
 
     useEffect(() => {
@@ -37,24 +40,67 @@ function AnyadirPrestamo() {
                     </div>
 
                     <div className="col m-2" align="center">
-                        <input id={"estadoInicial"} type="text" className="form-control my-3  bg-primary" placeholder="Estado Inicial" style={{width: '700px'}}/>
-                        <input id={"fechaDevolucion"} type="date" className="form-control my-3  bg-primary" placeholder="Fecha de devolucion" style={{width: '700px'}}/>
-                        <input id={"utilidad"} type="text" className="form-control my-3  bg-primary" placeholder="Utilidad" style={{width: '700px'}}/>
-                        <input id={"unidades"} type="number" min="1" className="form-control my-3  bg-primary" placeholder="Unidades" style={{width: '700px'}}/>
-                        <input id={"dniAlumno"} type="text" className="form-control my-3  bg-primary" placeholder="Dni del alumno a prestar" style={{width: '700px'}}/>
-                        <input id={"imagen"} type="file" className="form-control my-3  bg-primary" placeholder="Fotografías iniciales" style={{width: '700px'}}/>
+                        <input id={"estadoInicial"} type="text" className="form-control my-3  bg-primary"
+                               placeholder="Estado Inicial" style={{width: '700px'}}/>
+                        <input id={"fechaDevolucion"} type="date" className="form-control my-3  bg-primary"
+                               style={{width: '700px'}}/>
+                        <input id={"utilidad"} type="text" className="form-control my-3  bg-primary"
+                               placeholder="Utilidad" style={{width: '700px'}}/>
+                        <input id={"unidades"} type="number" min="1" className="form-control my-3  bg-primary"
+                               placeholder="Unidades" style={{width: '700px'}}/>
+                        <input id={"dniAlumno"} type="text" className="form-control my-3  bg-primary"
+                               placeholder="Dni del alumno a prestar" style={{width: '700px'}}/>
+                        <input id={"fileinput"} className={"form-control my-3 bg-primary"} type={"file"} multiple
+                               style={{width: '700px'}} onChange={seleccionarImagenes}/>
                     </div>
+
+
+                    <button className="btn btn-primary my-3" style={{width: '700px'}} onClick={() => {
+                        const estadoInicial = document.getElementById("estadoInicial").value;
+                        const fechaDevolucion = document.getElementById("fechaDevolucion").value;
+                        const utilidad = document.getElementById("utilidad").value;
+                        const unidades = document.getElementById("unidades").value;
+                        const dniAlumno = document.getElementById("dniAlumno").value;
+
+                        const fechaActual = format(new Date(), 'yyyy-MM-dd');
+
+                        const formData = new FormData();
+                        formData.append("estadoInicial", estadoInicial);
+                        formData.append("fechaInicio", fechaActual);
+                        formData.append("fechaDevolucion", fechaDevolucion);
+                        formData.append("utilidad", utilidad);
+                        formData.append("unidades", unidades);
+                        formData.append("materialId", materialId);
+                        formData.append("dniAlumno", dniAlumno);
+                        formData.append("dniProfesor", profesorId);
+
+
+                        ficheros.forEach(file => {
+                            formData.append('images', file);
+                        });
+
+                        fetch(BASEAPI + `/prestamo`, {
+                            method: "POST",
+                            body: formData,
+                        }).then(res => res.text()
+                            .then(res => console.log(res))
+                            .catch(err => console.error(err)))
+
+                        document.getElementById("fileinput").value = null;
+                        setFichero(null)
+                    }}>Crear préstamo
+                    </button>
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom p-0">
                     <div className="container">
-                            <p className="navbar-text m-0"
-                               style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis
-                                Miguel de Cara Ráez - IES Oretania</p>
-                        </div>
-                    </nav>
-                </div>
+                        <p className="navbar-text m-0"
+                           style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis
+                            Miguel de Cara Ráez - IES Oretania</p>
+                    </div>
+                </nav>
+            </div>
         </Fragment>
-)
+    )
 }
 
 export default AnyadirPrestamo;

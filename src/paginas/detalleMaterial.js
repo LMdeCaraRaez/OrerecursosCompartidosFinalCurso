@@ -21,12 +21,15 @@ function DetalleMaterial() {
 
     // Solo uso esta llamada para guardar la imagen en la base de datos en dbimages en caso de q no lo esté
     useEffect(() => {
-
-        fetch(BASEAPI + "/images/get/" + material.imagenId, {method: "GET"})
-            .then((response) => response.text())
-            .then((result) => {
-            })
-            .catch((error) => alert(error));
+        // Puede llegar a fallar si no se comprueba si imagenId existe todavía
+        if (material.imagenId) {
+            fetch(BASEAPI + "/images/get/" + material.imagenId, {method: "GET"})
+                .then((response) => response.text())
+                .then((result) => {
+                    // No tiene uso, solo subo la foto
+                })
+                .catch((error) => alert(error));
+        }
     }, [material]);
 
 
