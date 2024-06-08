@@ -2,6 +2,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import localeText, {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 import {useNavigate, useParams} from "react-router-dom";
 import {DataGrid} from "@mui/x-data-grid";
+import {format} from "date-fns";
 
 
 function VerPrestamos() {
@@ -14,20 +15,34 @@ function VerPrestamos() {
         {field: 'nombre', headerName: 'Nombre', width: 140},
         {field: 'apellidos', headerName: 'Apellidos', width: 140},
         {field: 'estado_inicial', headerName: 'Estado Inicial', width: 140},
-        {field: 'fecha_inicio', headerName: 'Fecha de inicio', width: 120},
-        {field: 'fecha_devolucion', headerName: 'Fecha de devolución', width: 120},
+        {field: 'fecha_inicio', headerName: 'Fecha de inicio', width: 120, renderCell: (params) => {
+                const fechaFormateada = format(new Date(params.value), "yyyy-MM-dd");
+
+                return (
+                    <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
+                    {fechaFormateada}
+                </span>
+                );
+            }},
+        {field: 'fecha_devolucion', headerName: 'Fecha de devolución', width: 120, renderCell: (params) => {
+                const fechaFormateada = format(new Date(params.value), "yyyy-MM-dd");
+
+                return (
+                    <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
+                    {fechaFormateada}
+                </span>
+                );
+            }},
         {field: 'unidades', headerName: 'Unidades', type: 'number', width: 90},
         {
             field: 'devuelto', headerName: 'Devuelto', width: 90, renderCell: (params) => {
                 const devuelto = parseInt(params.value);
 
-                console.log("devuelto es: " + devuelto);
 
                 let devueltoFormateado = "No"
                 if (devuelto === 1) {
                     devueltoFormateado = "Si"
                 }
-                console.log("devueltoFormateado es: " + devueltoFormateado);
                 return (
                     <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
                     {devueltoFormateado}
@@ -90,9 +105,11 @@ function crearDatagrid(prestamos, columnasTabla) {
 
     const getRowStyle = (params) => {
         if (params.row.devuelto === 1) {
+            console.log("SIIII")
             return { backgroundColor: 'blue'};
         }
-        return {};
+        console.log("NOOO")
+        return {backgroundColor: ''};
     };
 
 
@@ -101,15 +118,50 @@ function crearDatagrid(prestamos, columnasTabla) {
             rows={prestamos}
             columns={columnasTabla}
             pageSize={5}
-            componentsProps={{
-                row: {
-                    style: (params) => getRowStyle(params),
-                },
+            getRowClassName={(params) => {
+
+                if (params.row.devuelto === 0 && params.row.fecha_inicio >= params.row.fecha_devolucion ) {
+                    console.log("SIIII")
+
+                    return  "noDevueltoATiempo";
+                }
+
+                if (params.row.devuelto === 0  && params.row.fecha_inicio < params.row.fecha_devolucion) {
+                    return  "noDevueltoTodavia";
+                }
+
+                if (params.row.devuelto === 1  && params.row.fecha_inicio < params.row.fecha_devolucion) {
+                    return  "DevueltoATiempo";
+                }
+
+                if (params.row.devuelto === 1 && params.row.fecha_inicio >= params.row.fecha_devolucion ) {
+                    console.log("SIIII")
+
+                    return  "DevueltoTarde";
+                }
+
+
+
+
             }}
             onCellDoubleClick={(params) => {
                 console.log(params.row)
             }}
             localeText={localeText}
+            sx={{
+                ".noDevueltoATiempo": {
+                    bgcolor: "red",
+                },
+                ".noDevueltoTodavia": {
+                    bgcolor: "",
+                },
+                ".DevueltoATiempo": {
+                    bgcolor: "wheat",
+                },
+                ".DevueltoTarde": {
+                    bgcolor: "brown",
+                },
+            }}
         />
     )
 }

@@ -45,8 +45,7 @@ function DetalleMaterial() {
                         <a className="navbar-text" href="/" onClick={() => localStorage.clear()}>Cerrar sesión</a>
                     </div>
                 </nav>
-                <div
-                    className="contenedorCuerpo bg-secondary flex-grow-0 d-flex justify-content-center align-items-center">
+                <div className="contenedorCuerpo bg-secondary flex-grow-0 d-flex justify-content-center align-items-center">
                     <div className="card m-5 p-3" style={{width: '80%'}}>
                         <div className="row">
                             <div className="col-md-8">
