@@ -15,6 +15,7 @@ import AnyadirPrestamo from "./paginas/anyadirPrestamo";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
     <Router>
         <Routes>
@@ -23,7 +24,7 @@ root.render(
             <Route path="/bienvenida" element={<Bienvenida/>}/>
             <Route path="/prueba" element={<Prueba/>}/>
             <Route path="/ver/articulos" element={<VerMateriales/>}/>
-            <Route path="/ver/prestamos/profesor/:profesorId" element={<VerPrestamos/>}/>
+            <Route path="/ver/prestamos/:usuarioId/:tipoUsuario" element={<VerPrestamos/>}/>
             <Route path="/editar/articulo/:articuloId" element={<EditarMaterial/>}/>
             <Route path="/crear/articulos" element={<CrearMaterial/>}/>
             <Route path="/crear/prestamo/:profesorId/:materialId" element={<AnyadirPrestamo/>}/>

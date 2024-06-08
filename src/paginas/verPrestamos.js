@@ -1,13 +1,55 @@
-import React, {Fragment} from "react";
-import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
+import React, {Fragment, useEffect, useState} from "react";
+import localeText, {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 import {useNavigate, useParams} from "react-router-dom";
+import {DataGrid} from "@mui/x-data-grid";
 
 
 function VerPrestamos() {
-    let {profesorId} = useParams();
+    let {usuarioId, tipoUsuario} = useParams();
+    const [prestamos, setPrestamos] = useState([]);
     const navigate = useNavigate();
 
-    return(
+    const columnasTabla = [
+        {field: 'id', headerName: 'ID', width: 90},
+        {field: 'nombre', headerName: 'Nombre', width: 140},
+        {field: 'apellidos', headerName: 'Apellidos', width: 140},
+        {field: 'estado_inicial', headerName: 'Estado Inicial', width: 140},
+        {field: 'fecha_inicio', headerName: 'Fecha de inicio', width: 120},
+        {field: 'fecha_devolucion', headerName: 'Fecha de devolución', width: 120},
+        {field: 'unidades', headerName: 'Unidades', type: 'number', width: 90},
+        {
+            field: 'devuelto', headerName: 'Devuelto', width: 90, renderCell: (params) => {
+                const devuelto = parseInt(params.value);
+
+                console.log("devuelto es: " + devuelto);
+
+                let devueltoFormateado = "No"
+                if (devuelto === 1) {
+                    devueltoFormateado = "Si"
+                }
+                console.log("devueltoFormateado es: " + devueltoFormateado);
+                return (
+                    <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
+                    {devueltoFormateado}
+                </span>
+                );
+            }
+        }
+    ];
+
+    useEffect(() => {
+        fetch(BASEAPI + `/prestamos/${tipoUsuario}/${usuarioId}`, {
+            method: "GET",
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                setPrestamos(result);
+                console.log(result)
+            })
+            .catch((error) => console.error(error));
+    }, []);
+
+    return (
         <Fragment>
             <div className="bg-secondary d-flex flex-column" style={{minHeight: '100vh'}}>
                 <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
@@ -22,16 +64,53 @@ function VerPrestamos() {
                 <div
                     className="contenedorCuerpo bg-secondary flex-grow-0 d-flex justify-content-center align-items-center">
                     <div className="contenedor-interior d-flex justify-content-center align-items-center">
-
+                        <div className="mt-5" style={{width: '90%', height: '35%'}}>
+                            {prestamos.length === 0 ? <div className="card">
+                                    <div className="card-body">
+                                        <h5 className="card-title">No hay materiales disponibles</h5>
+                                        <p className="card-text">Pulsa en "Crear nuevo material y crea uno!! :D"</p>
+                                    </div>
+                                </div> : crearDatagrid(prestamos, columnasTabla)
+                                }
+                        </div>
                     </div>
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
                     <div className="container">
-                        <p className="navbar-text m-0" style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis Miguel de Cara Ráez - IES Oretania</p>
+                        <p className="navbar-text m-0" style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis
+                            Miguel de Cara Ráez - IES Oretania</p>
                     </div>
                 </nav>
             </div>
         </Fragment>
+    )
+}
+
+function crearDatagrid(prestamos, columnasTabla) {
+
+    const getRowStyle = (params) => {
+        if (params.row.devuelto === 1) {
+            return { backgroundColor: 'blue'};
+        }
+        return {};
+    };
+
+
+    return(
+        <DataGrid
+            rows={prestamos}
+            columns={columnasTabla}
+            pageSize={5}
+            componentsProps={{
+                row: {
+                    style: (params) => getRowStyle(params),
+                },
+            }}
+            onCellDoubleClick={(params) => {
+                console.log(params.row)
+            }}
+            localeText={localeText}
+        />
     )
 }
 

@@ -154,7 +154,7 @@ function filaBotones(tipoAlumno, navigate, profesorId) {
                 <div className="col mx-5 d-flex justify-content-center align-items-center">
 
                     <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
-                        () => navigate("/ver/prestamos/profesor/" + profesorId)
+                        () => navigate("/ver/prestamos/" + profesorId + "/profesor")
                     }>
                         <div className="row p-2">
                             <p>Prestamos</p>
@@ -170,22 +170,17 @@ function filaBotones(tipoAlumno, navigate, profesorId) {
                             <img className="" src={BASEAPI + "/subir.svg"} alt="" width="45" height="45"/>
                         </div>
                     </button>
-
-                    <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={() => navigate("/prueba")}>
-                        <div className="row p-2">
-                            <p>Crear un nuevo préstamo</p>
-                            <img className="" src={BASEAPI + `/crear.svg`} alt="" width="45" height="45"/>
-                        </div>
-                    </button>
                 </div>
             )
         case "alumno":
             return (
                 <div className="col mx-5 d-flex justify-content-center align-items-center">
 
-                    <button className="btn btn-primary mx-4" style={{width: '20%'}}>
+                    <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
+                        () => navigate("/ver/prestamos/" + profesorId + "/alumno")
+                    }>
                         <div className="row p-2">
-                            <p>Ver mis propios pedidos</p>
+                            <p>Ver mis propios prestamos</p>
                             <img className="" src={BASEAPI + `/lista.svg`} alt="" width="45" height="45"/>
                         </div>
                     </button>
