@@ -1,11 +1,12 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import { format } from 'date-fns';
 
 
 function DetallePrestamo() {
-
-    let {prestamoId} = useParams();
+    let {prestamoId, tipoUsuario} = useParams();
+    const navigate = useNavigate();
 
     const [prestamo, setPrestamo] = useState({});
     const [imagenes, setImagenes] = useState({});
@@ -62,58 +63,103 @@ function DetallePrestamo() {
                                     <p className="card-text"><strong>Devuelto: </strong>{prestamo.devuelto === 1 ? <strong style={{color: "green"}}>Devuelto</strong> : <strong style={{color: "red"}}>No devuelto</strong>}</p>
                                     <p className="card-text"><strong>Precio material: </strong>{prestamo.precioMaterial}</p>
                                     <p className="card-text"><strong>Utilidad o proyecto asignado: </strong>{prestamo.utilidad}</p>
-                                    <p className="card-text"><strong>Fecha inicio préstamo: </strong>{prestamo.fecha_inicio}</p>
-                                    <p className="card-text"><strong>Fecha devolución préstamo: </strong>{prestamo.fecha_devolucion ? prestamo.fecha_devolucion : "No se ha entregado todavía"}</p>
+                                    <p className="card-text"><strong>Fecha inicio préstamo: </strong>{prestamo.fecha_inicio ? format(new Date(prestamo.fecha_inicio), 'yyyy-MM-dd') : ""}</p>
+                                    <p className="card-text"><strong>Fecha devolución préstamo: </strong>{prestamo.fecha_devolucion ? format(new Date(prestamo.fecha_devolucion), 'yyyy-MM-dd') : "No se ha entregado todavía"}</p>
                                 </div>
                             </div>
                             <div className="col d-flex flex-column align-items-center">
-
-                                <h3>Imagenes Iniciales</h3>
-                                <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
-                                    <div className="carousel-inner">
-                                        {imagenes.imagenesIniciales && imagenes.imagenesIniciales.map((imagen, index) => (
-                                            <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
-                                                <img src={BASEAPI + "/" + imagen} className="d-block w-100" alt={""} style={{width:'100%', height:'200px', objectFit:'cover'}} />
-                                            </div>
-                                        ))}
+                                {(imagenes.imagenesIniciales && imagenes.imagenesIniciales.length === 0 && imagenes.imagenesFinales && imagenes.imagenesFinales.length === 0) ? (
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">No hay imágenes</h5>
+                                            <p className="card-text">No se encontraron imágenes del préstamo.</p>
+                                        </div>
                                     </div>
-                                    <button className="carousel-control-prev" type="button"
-                                            data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span className="visually-hidden">Previous</span>
-                                    </button>
-                                    <button className="carousel-control-next" type="button"
-                                            data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span className="visually-hidden">Next</span>
-                                    </button>
-                                </div>
-
-                                <h3>Imagenes de entrega</h3>
-                                <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
-                                    <div className="carousel-inner">
-                                        {imagenes.imagenesFinales && imagenes.imagenesFinales.map((imagen, index) => (
-                                            <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
-                                                <img src={BASEAPI + "/" + imagen} className="d-block w-100" alt={""} style={{width:'100%', height:'200px', objectFit:'cover'}} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <button className="carousel-control-prev" type="button"
-                                            data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span className="visually-hidden">Previous</span>
-                                    </button>
-                                    <button className="carousel-control-next" type="button"
-                                            data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span className="visually-hidden">Next</span>
-                                    </button>
-                                </div>
-
+                                ) : (
+                                    <>
+                                        {imagenes.imagenesIniciales && imagenes.imagenesIniciales.length > 0 && (
+                                            <>
+                                                <h3>Imágenes Iniciales</h3>
+                                                <div id="carruselInicial" className="carousel slide"
+                                                     data-bs-ride="carousel">
+                                                    <div className="carousel-inner">
+                                                        {imagenes.imagenesIniciales.map((imagen, index) => (
+                                                            <div key={index}
+                                                                 className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                                                                <img src={BASEAPI + "/" + imagen}
+                                                                     className="d-block w-100" alt="" style={{
+                                                                    width: '100%',
+                                                                    height: '200px',
+                                                                    objectFit: 'cover'
+                                                                }}/>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <button className="carousel-control-prev" type="button"
+                                                            data-bs-target="#carruselInicial" data-bs-slide="prev">
+                                                        <span className="carousel-control-prev-icon"
+                                                              aria-hidden="true"></span>
+                                                        <span className="visually-hidden">Previous</span>
+                                                    </button>
+                                                    <button className="carousel-control-next" type="button"
+                                                            data-bs-target="#carruselInicial" data-bs-slide="next">
+                                                        <span className="carousel-control-next-icon"
+                                                              aria-hidden="true"></span>
+                                                        <span className="visually-hidden">Next</span>
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
+                                        {imagenes.imagenesFinales && imagenes.imagenesFinales.length > 0 && (
+                                            <>
+                                                <h3 className="mt-5">Imágenes de entrega</h3>
+                                                <div id="carruselFinal" className="carousel slide"
+                                                     data-bs-ride="carousel">
+                                                    <div className="carousel-inner">
+                                                        {imagenes.imagenesFinales.map((imagen, index) => (
+                                                            <div key={index}
+                                                                 className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                                                                <img src={BASEAPI + "/" + imagen}
+                                                                     className="d-block w-100" alt="" style={{
+                                                                    width: '100%',
+                                                                    height: '200px',
+                                                                    objectFit: 'cover'
+                                                                }}/>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <button className="carousel-control-prev" type="button"
+                                                            data-bs-target="#carruselFinal" data-bs-slide="prev">
+                                                        <span className="carousel-control-prev-icon"
+                                                              aria-hidden="true"></span>
+                                                        <span className="visually-hidden">Previous</span>
+                                                    </button>
+                                                    <button className="carousel-control-next" type="button"
+                                                            data-bs-target="#carruselFinal" data-bs-slide="next">
+                                                        <span className="carousel-control-next-icon"
+                                                              aria-hidden="true"></span>
+                                                        <span className="visually-hidden">Next</span>
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
+                                    </>
+                                )}
                             </div>
                         </div>
-                        <button className="btn btn-primary mt-3" style={{width: "20%"}}>Crear préstamo
-                        </button>
+
+                        <div className="mt-3" style={{ display: "flex", gap: "10px" }}>
+                            {tipoUsuario === "alumno" ? (
+                                <button className="btn btn-primary" style={{ width: "20%" }} onClick={() => {
+
+                                    if (prestamo.devuelto === 1) {
+                                        alert("No puedes entregar un prestamo ya devuelto")
+                                    } else {navigate("/entregar/prestamo/" + prestamo.id)}
+                                }}>Entregar préstamo</button>
+                            ) : null}
+                            <button className="btn btn-primary" style={{ width: "20%" }}>Imprimir préstamo</button>
+                        </div>
+
                     </div>
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">

@@ -99,7 +99,7 @@ function VerPrestamos() {
                                     <h5 className="card-title">No hay préstamos disponibles</h5>
                                     <p className="card-text">Pide a algun profesor que te preste algún material</p>
                                 </div>
-                            </div> : crearDatagrid(prestamos, columnasTabla, navigate)
+                            </div> : crearDatagrid(prestamos, columnasTabla, navigate, tipoUsuario)
                             }
                         </div>
                     </div>
@@ -115,12 +115,13 @@ function VerPrestamos() {
     )
 }
 
-function crearDatagrid(prestamos, columnasTabla, navigate) {
+function crearDatagrid(prestamos, columnasTabla, navigate, tipoUsuario) {
 
     return (
         <DataGrid
             rows={prestamos}
             columns={columnasTabla}
+
             pageSize={5}
             getRowClassName={(params) => {
 
@@ -139,7 +140,7 @@ function crearDatagrid(prestamos, columnasTabla, navigate) {
             }}
             onCellDoubleClick={(params) => {
                 console.log(params.row)
-                navigate("/detalle/prestamo/" + params.row.id)
+                navigate("/detalle/prestamo/" + params.row.id + "/" + tipoUsuario)
 
             }}
             localeText={localeText}

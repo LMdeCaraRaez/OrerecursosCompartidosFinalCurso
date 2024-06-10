@@ -10,7 +10,6 @@ function AnyadirPrestamo() {
     const [ficheros, setFichero] = useState([]);
     const seleccionarImagenes = e => {setFichero([...e.target.files])}
 
-
     useEffect(() => {
         fetch(BASEAPI + "/material/materialid/" + materialId, {method: "GET"})
             .then((response) => response.json())
@@ -42,8 +41,6 @@ function AnyadirPrestamo() {
                     <div className="col m-2" align="center">
                         <input id={"estadoInicial"} type="text" className="form-control my-3  bg-primary"
                                placeholder="Estado Inicial" style={{width: '700px'}}/>
-                        <input id={"fechaDevolucion"} type="date" className="form-control my-3  bg-primary"
-                               style={{width: '700px'}}/>
                         <input id={"utilidad"} type="text" className="form-control my-3  bg-primary"
                                placeholder="Utilidad" style={{width: '700px'}}/>
                         <input id={"unidades"} type="number" min="1" className="form-control my-3  bg-primary"
@@ -57,7 +54,6 @@ function AnyadirPrestamo() {
 
                     <button className="btn btn-primary my-3" style={{width: '700px'}} onClick={() => {
                         const estadoInicial = document.getElementById("estadoInicial").value;
-                        const fechaDevolucion = document.getElementById("fechaDevolucion").value;
                         const utilidad = document.getElementById("utilidad").value;
                         const unidades = document.getElementById("unidades").value;
                         const dniAlumno = document.getElementById("dniAlumno").value;
@@ -67,13 +63,11 @@ function AnyadirPrestamo() {
                         const formData = new FormData();
                         formData.append("estadoInicial", estadoInicial);
                         formData.append("fechaInicio", fechaActual);
-                        formData.append("fechaDevolucion", fechaDevolucion);
                         formData.append("utilidad", utilidad);
                         formData.append("unidades", unidades);
                         formData.append("materialId", materialId);
                         formData.append("dniAlumno", dniAlumno);
                         formData.append("dniProfesor", profesorId);
-
 
                         ficheros.forEach(file => {
                             formData.append('images', file);
@@ -82,9 +76,22 @@ function AnyadirPrestamo() {
                         fetch(BASEAPI + `/prestamo`, {
                             method: "POST",
                             body: formData,
-                        }).then(res => res.text()
-                            .then(res => console.log(res))
-                            .catch(err => console.error(err)))
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    return response.text().then(text => {
+                                        throw new Error(text);
+                                    });
+                                }
+                                return response.text();
+                            })
+                            .then(res => {
+                                console.log(res);
+                                alert(res);
+                            })
+                            .catch(err => {
+                                alert(err.message);
+                            });
 
                         document.getElementById("fileinput").value = null;
                         setFichero(null)

@@ -19,7 +19,7 @@ function DetalleMaterial() {
             .catch((error) => alert(error));
     }, [articuloId]);
 
-    // Solo uso esta llamada para guardar la imagen en la base de datos en dbimages en caso de q no lo esté
+    // Solo uso esta llamada para guardar la imagen en la base de datos en dbimages en caso de q no lo esté TODO, cambiarlo a que lo ahga la llamada
     useEffect(() => {
         // Puede llegar a fallar si no se comprueba si imagenId existe todavía
         if (material.imagenId) {
@@ -70,7 +70,18 @@ function DetalleMaterial() {
                             </div>
                         </div>
                         <button className="btn btn-primary mt-3" style={{width: "20%"}} onClick={() => {
-                            navigate('/crear/prestamo/' + localStorageDni + "/" + articuloId)
+
+                            fetch(BASEAPI + "/prestamo/existe/" + articuloId, {method: "GET"})
+                                .then((response) => response.json())
+                                .then((result) => {
+                                    console.log(result)
+                                    if (JSON.parse(result) === true) {
+                                        alert("Este articulo ya está siendo prestado, no puedes volver a prestarlo")
+                                    } else {
+                                        navigate('/crear/prestamo/' + localStorageDni + "/" + articuloId)
+                                    }
+                                })
+                                .catch((error) => alert(error));
                         }}>Crear préstamo
                         </button>
                     </div>

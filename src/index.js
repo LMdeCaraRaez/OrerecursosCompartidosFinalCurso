@@ -13,6 +13,7 @@ import VerPrestamos from "./paginas/verPrestamos";
 import DetalleMaterial from "./paginas/detalleMaterial";
 import AnyadirPrestamo from "./paginas/anyadirPrestamo";
 import DetallePrestamo from "./paginas/detallePrestamo";
+import EntregarPrestamo from "./paginas/entregarPrestamo";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -29,8 +30,9 @@ root.render(
             <Route path="/editar/articulo/:articuloId" element={<EditarMaterial/>}/>
             <Route path="/crear/articulos" element={<CrearMaterial/>}/>
             <Route path="/crear/prestamo/:profesorId/:materialId" element={<AnyadirPrestamo/>}/>
+            <Route path="/entregar/prestamo/:prestamoId" element={<EntregarPrestamo/>}/>
             <Route path="/detalle/articulo/:articuloId" element={<DetalleMaterial/>}/>
-            <Route path="/detalle/prestamo/:prestamoId" element={<DetallePrestamo/>}/>
+            <Route path="/detalle/prestamo/:prestamoId/:tipoUsuario" element={<DetallePrestamo/>}/>
             <Route path="/correo/:correoaverificar/:tipousuario" element={<CorreoVerificado/>}/>
         </Routes>
     </Router>
