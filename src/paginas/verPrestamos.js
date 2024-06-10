@@ -12,28 +12,9 @@ function VerPrestamos() {
 
     const columnasTabla = [
         {field: 'id', headerName: 'ID', width: 90},
-        {field: 'nombre', headerName: 'Nombre', width: 140},
+        {field: 'nombre', headerName: 'nombre', width: 140},
         {field: 'apellidos', headerName: 'Apellidos', width: 140},
-        {field: 'estado_inicial', headerName: 'Estado Inicial', width: 140},
-        {field: 'fecha_inicio', headerName: 'Fecha de inicio', width: 120, renderCell: (params) => {
-                const fechaFormateada = format(new Date(params.value), "yyyy-MM-dd");
-
-                return (
-                    <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
-                    {fechaFormateada}
-                </span>
-                );
-            }},
-        {field: 'fecha_devolucion', headerName: 'Fecha de devolución', width: 120, renderCell: (params) => {
-                const fechaFormateada = format(new Date(params.value), "yyyy-MM-dd");
-
-                return (
-                    <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
-                    {fechaFormateada}
-                </span>
-                );
-            }},
-        {field: 'unidades', headerName: 'Unidades', type: 'number', width: 90},
+        {field: 'nombreMaterial', headerName: 'Nombre del material', width: 140},
         {
             field: 'devuelto', headerName: 'Devuelto', width: 90, renderCell: (params) => {
                 const devuelto = parseInt(params.value);
@@ -49,7 +30,40 @@ function VerPrestamos() {
                 </span>
                 );
             }
-        }
+        },
+        {field: 'estado_inicial', headerName: 'Estado Inicial', width: 140},
+        {
+            field: 'fecha_inicio', headerName: 'Fecha de inicio', width: 120, renderCell: (params) => {
+                const fechaFormateada = format(new Date(params.value), "yyyy-MM-dd");
+
+                return (
+                    <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
+                    {fechaFormateada}
+                </span>
+                );
+            }
+        },
+        {
+            field: 'fecha_devolucion', headerName: 'Fecha de devolución', width: 160, renderCell: (params) => {
+                const fecha = params.value
+
+                if (!fecha) {
+                    return (
+                        <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
+                             {"No hay, no devuelto"}
+                         </span>
+                    )
+                }
+                const fechaFormateada = format(new Date(params.value), "yyyy-MM-dd");
+
+                return (
+                    <span style={{color: 'black'/*No hay otra manera de cambiar los estilos*/}}>
+                    {fechaFormateada}
+                </span>
+                );
+            }
+        },
+        {field: 'unidades', headerName: 'Unidades', type: 'number', width: 90}
     ];
 
     useEffect(() => {
@@ -81,12 +95,12 @@ function VerPrestamos() {
                     <div className="contenedor-interior d-flex justify-content-center align-items-center">
                         <div className="mt-5" style={{width: '90%', height: '35%'}}>
                             {prestamos.length === 0 ? <div className="card">
-                                    <div className="card-body">
-                                        <h5 className="card-title">No hay materiales disponibles</h5>
-                                        <p className="card-text">Pulsa en "Crear nuevo material y crea uno!! :D"</p>
-                                    </div>
-                                </div> : crearDatagrid(prestamos, columnasTabla)
-                                }
+                                <div className="card-body">
+                                    <h5 className="card-title">No hay préstamos disponibles</h5>
+                                    <p className="card-text">Pide a algun profesor que te preste algún material</p>
+                                </div>
+                            </div> : crearDatagrid(prestamos, columnasTabla, navigate)
+                            }
                         </div>
                     </div>
                 </div>
@@ -101,65 +115,40 @@ function VerPrestamos() {
     )
 }
 
-function crearDatagrid(prestamos, columnasTabla) {
+function crearDatagrid(prestamos, columnasTabla, navigate) {
 
-    const getRowStyle = (params) => {
-        if (params.row.devuelto === 1) {
-            console.log("SIIII")
-            return { backgroundColor: 'blue'};
-        }
-        console.log("NOOO")
-        return {backgroundColor: ''};
-    };
-
-
-    return(
+    return (
         <DataGrid
             rows={prestamos}
             columns={columnasTabla}
             pageSize={5}
             getRowClassName={(params) => {
 
-                if (params.row.devuelto === 0 && params.row.fecha_inicio >= params.row.fecha_devolucion ) {
-                    console.log("SIIII")
 
-                    return  "noDevueltoATiempo";
-                }
-
-                if (params.row.devuelto === 0  && params.row.fecha_inicio < params.row.fecha_devolucion) {
-                    return  "noDevueltoTodavia";
-                }
-
-                if (params.row.devuelto === 1  && params.row.fecha_inicio < params.row.fecha_devolucion) {
-                    return  "DevueltoATiempo";
-                }
-
-                if (params.row.devuelto === 1 && params.row.fecha_inicio >= params.row.fecha_devolucion ) {
-                    console.log("SIIII")
-
-                    return  "DevueltoTarde";
+                if (params.row.devuelto === 0) {
+                    return "noDevuelto";
                 }
 
 
+                if (params.row.devuelto === 1) {
+
+                    return "Devuelto";
+                }
 
 
             }}
             onCellDoubleClick={(params) => {
                 console.log(params.row)
+                navigate("/detalle/prestamo/" + params.row.id)
+
             }}
             localeText={localeText}
             sx={{
-                ".noDevueltoATiempo": {
+                ".noDevuelto": {
                     bgcolor: "red",
                 },
-                ".noDevueltoTodavia": {
-                    bgcolor: "",
-                },
-                ".DevueltoATiempo": {
-                    bgcolor: "wheat",
-                },
-                ".DevueltoTarde": {
-                    bgcolor: "brown",
+                ".Devuelto": {
+                    bgcolor: "green",
                 },
             }}
         />
