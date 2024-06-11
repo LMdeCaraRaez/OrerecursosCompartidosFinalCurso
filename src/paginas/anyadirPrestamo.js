@@ -69,32 +69,36 @@ function AnyadirPrestamo() {
                         formData.append("dniAlumno", dniAlumno);
                         formData.append("dniProfesor", profesorId);
 
-                        ficheros.forEach(file => {
-                            formData.append('images', file);
-                        });
-
-                        fetch(BASEAPI + `/prestamo`, {
-                            method: "POST",
-                            body: formData,
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    return response.text().then(text => {
-                                        throw new Error(text);
-                                    });
-                                }
-                                return response.text();
-                            })
-                            .then(res => {
-                                console.log(res);
-                                alert(res);
-                            })
-                            .catch(err => {
-                                alert(err.message);
+                        if (unidades < 1) {
+                            alert("Debes seleccionar una o más unidades")
+                        } else {
+                            ficheros.forEach(file => {
+                                formData.append('images', file);
                             });
 
-                        document.getElementById("fileinput").value = null;
-                        setFichero(null)
+                            fetch(BASEAPI + `/prestamo`, {
+                                method: "POST",
+                                body: formData,
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        return response.text().then(text => {
+                                            throw new Error(text);
+                                        });
+                                    }
+                                    return response.text();
+                                })
+                                .then(res => {
+                                    console.log(res);
+                                    alert(res);
+                                })
+                                .catch(err => {
+                                    alert(err.message);
+                                });
+
+                            document.getElementById("fileinput").value = null;
+                            setFichero(null)
+                        }
                     }}>Crear préstamo
                     </button>
                 </div>

@@ -6,6 +6,7 @@ import {useNavigate, useParams} from "react-router-dom";
 function DetalleMaterial() {
     const [material, setMaterial] = useState({});
     let {articuloId} = useParams();
+    const [rutaImagen, setRutaImagen] = useState();
     const navigate = useNavigate();
     const localStorageDni = JSON.parse(localStorage.getItem("dni"));
 
@@ -26,7 +27,8 @@ function DetalleMaterial() {
             fetch(BASEAPI + "/images/get/" + material.imagenId, {method: "GET"})
                 .then((response) => response.text())
                 .then((result) => {
-                    // No tiene uso, solo subo la foto
+                    console .log(result)
+                    setRutaImagen(result)
                 })
                 .catch((error) => alert(error));
         }
@@ -60,9 +62,11 @@ function DetalleMaterial() {
                                 </div>
                             </div>
                             <div className="col d-flex flex-column align-items-center">
-                                <img src={BASEAPI + "/" + material.imagenId + "-" + material.name}
-                                     className="img my-2 rounded border border-primary border-2"
-                                     style={{width: '40%'}}/>
+
+                                {rutaImagen ? <img src={BASEAPI + "/" + rutaImagen}
+                                                          className="img my-2 rounded border border-primary border-2"
+                                                          style={{width: '40%'}}/> : ""}
+
                                 <button className="btn btn-primary mt-auto" onClick={() => {
                                     navigate("/editar/articulo/" + articuloId)
                                 }}>Editar Material

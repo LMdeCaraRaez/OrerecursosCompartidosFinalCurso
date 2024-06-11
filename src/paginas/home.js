@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 
 function Home() {
@@ -15,7 +15,6 @@ function Home() {
             navigate('/bienvenida');
         }
     }, []);
-
 
 
     return (
@@ -48,6 +47,11 @@ function Home() {
                                            onClick={() => {
                                                setTipoUsuario("Alumno")
                                            }}>Alumno</a>
+                                    </li>
+                                    <li><a className="dropdown-item"
+                                           onClick={() => {
+                                               setTipoUsuario("Administrador")
+                                           }}>Administrador</a>
                                     </li>
                                 </ul>
                             </div>
@@ -129,6 +133,30 @@ function Home() {
                                                 alert(error);
                                             });
 
+                                    } else if (tipoUsuario === "Administrador") {
+
+                                        fetch(BASEAPI + `/administrador/existe/${correo}/${contrasenya}`, {
+                                            method: "GET",
+                                            headers: myHeaders,
+                                        }).then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Error al enviar los parámetros de la llamada' + response);
+                                            }
+                                            return response.json();
+                                        })
+                                            .then(data => {
+                                                console.log(data);
+                                                const usuario = data
+                                                localStorage.setItem("dni", JSON.stringify(usuario.dni));
+                                                localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
+                                                localStorage.setItem("tipousuario", JSON.stringify("alumno"));
+
+                                                navigate('/'); //TODO, debe enviar a pestaña de bienvenida admin
+
+                                            })
+                                            .catch(error => {
+                                                alert(error);
+                                            });
                                     } else {
                                         alert("Selecciona un tipo de usuario");
                                     }

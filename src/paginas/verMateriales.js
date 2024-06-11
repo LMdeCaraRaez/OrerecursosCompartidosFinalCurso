@@ -20,7 +20,7 @@ function VerMateriales() {
         { field: 'precio', headerName: 'Precio', type: 'number', width: 110, renderCell: (params) => {
                 const precio = parseFloat(params.value);
                 return (
-                    <span style={{ color: precio < 5? 'green' : 'black' /*No hay otra manera de cambiar los estilos*/}}>
+                    <span>
                     {precio + "€"}
                 </span>
                 );
@@ -72,7 +72,6 @@ function VerMateriales() {
                                 rows={filasTabla}
                                 columns={columnasTabla}
                                 pageSize={5}
-                                checkboxSelection
                                 onCellDoubleClick={(params) => {
                                     console.log('Se ha hecho doble click en la celda: ', params);
                                     navigate("/detalle/articulo/" + params.row.id)

@@ -1,5 +1,6 @@
 import React, {Fragment, useState} from "react";
 import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
+import {useNavigate} from "react-router-dom";
 
 function CrearMaterial() {
 
@@ -7,6 +8,7 @@ function CrearMaterial() {
 
     const [image, setImage] = useState("");
     const [fichero, setFichero] = useState(null);
+    const navigate = useNavigate();
 
     const anyadirMaterial = (nombre, estado, descripcion, ubicacion, precio) => {
         if (!fichero) {
@@ -26,7 +28,11 @@ function CrearMaterial() {
             method: "POST",
             body: formData,
         }).then(res => res.text()
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res)
+                alert(res)
+                navigate("/")
+            })
             .catch(err => console.error(err)))
 
         document.getElementById("fileinput").value = null;
