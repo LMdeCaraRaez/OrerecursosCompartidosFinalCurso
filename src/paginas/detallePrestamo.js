@@ -2,6 +2,8 @@ import React, {Fragment, useEffect, useState} from "react";
 import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 import {useNavigate, useParams} from "react-router-dom";
 import { format } from 'date-fns';
+import VistaPDF from "./documentoPdf";
+import {pdf} from "@react-pdf/renderer";
 
 
 function DetallePrestamo() {
@@ -157,7 +159,17 @@ function DetallePrestamo() {
                                     } else {navigate("/entregar/prestamo/" + prestamo.id)}
                                 }}>Entregar préstamo</button>
                             ) : null}
-                            <button className="btn btn-primary" style={{ width: "20%" }}>Imprimir préstamo</button>
+                            <button className="btn btn-primary" style={{ width: "20%" }} onClick={ async () => {
+
+                                // Genera el PDF como un blob
+                                const blob = await pdf(<VistaPDF datosPrestamo={prestamo}/>).toBlob();
+                                // Crea una URL a partir del blob
+                                const url = URL.createObjectURL(blob);
+                                // Abre la URL en una nueva pestaña
+                                window.open(url, "_blank");
+
+                            }
+                            }>Imprimir préstamo</button>
                         </div>
 
                     </div>

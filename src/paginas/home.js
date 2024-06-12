@@ -12,7 +12,11 @@ function Home() {
         const localStorageTipoUsuario = localStorage.getItem("tipousuario");
 
         if (localStorageDni !== null && localStorageContrasenya !== null && localStorageTipoUsuario !== null) {
-            navigate('/bienvenida');
+            if (JSON.parse(localStorageTipoUsuario) === "admin") {
+                navigate("/bienvenida/administrador");
+            } else {
+                navigate('/bienvenida');
+            }
         }
     }, []);
 
@@ -69,51 +73,49 @@ function Home() {
                                     alert("Debe rellenar todos los campos");
                                 } else {
 
-                                    const myHeaders = new Headers();
-                                    myHeaders.append("Content-Type", "application/json");
 
                                     if (tipoUsuario === "Profesor") {
 
                                         fetch(BASEAPI + `/profesor/existe/${correo}/${contrasenya}`, {
-                                            method: "GET",
-                                            headers: myHeaders,
-                                        }).then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Error al enviar los parámetros de la llamada' + response);
-                                            }
-                                            return response.json();
+                                            method: "GET"
                                         })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    return response.text().then(text => {
+                                                        throw new Error(text);
+                                                    });
+                                                }
+                                                return response.json();
+                                            })
                                             .then(data => {
-                                                const usuario = data
-                                                console.log(data)
-                                                if (data.validado === 1) {
+                                                const usuario = data;
+                                                console.log(data);
+                                                if (usuario.validado === 1) {
                                                     localStorage.setItem("dni", JSON.stringify(usuario.dni));
                                                     localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
                                                     localStorage.setItem("tipousuario", JSON.stringify("profesor"));
-
                                                     navigate('/bienvenida');
                                                 } else {
-                                                    alert("Debes validar tu correo para iniciar sesión!!!")
+                                                    alert("Debes validar tu correo para iniciar sesión!!!");
                                                 }
-
-
                                             })
-                                            .catch(error => {
-                                                alert(error);
+                                            .catch(err => {
+                                                alert(err.message);
                                             });
-
 
                                     } else if (tipoUsuario === "Alumno") {
 
                                         fetch(BASEAPI + `/alumno/existe/${correo}/${contrasenya}`, {
-                                            method: "GET",
-                                            headers: myHeaders,
-                                        }).then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Error al enviar los parámetros de la llamada' + response);
-                                            }
-                                            return response.json();
+                                            method: "GET"
                                         })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    return response.text().then(text => {
+                                                        throw new Error(text);
+                                                    });
+                                                }
+                                                return response.json();
+                                            })
                                             .then(data => {
                                                 console.log(data);
                                                 if (data.validado === 1) {
@@ -126,36 +128,36 @@ function Home() {
                                                 } else {
                                                     alert("Debes validar tu correo para iniciar sesión!!!")
                                                 }
-
-
                                             })
-                                            .catch(error => {
-                                                alert(error);
+                                            .catch(err => {
+                                                alert(err.message);
                                             });
 
                                     } else if (tipoUsuario === "Administrador") {
 
                                         fetch(BASEAPI + `/administrador/existe/${correo}/${contrasenya}`, {
-                                            method: "GET",
-                                            headers: myHeaders,
-                                        }).then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Error al enviar los parámetros de la llamada' + response);
-                                            }
-                                            return response.json();
+                                            method: "GET"
                                         })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    return response.text().then(text => {
+                                                        throw new Error(text);
+                                                    });
+                                                }
+                                                return response.json();
+                                            })
                                             .then(data => {
                                                 console.log(data);
                                                 const usuario = data
-                                                localStorage.setItem("dni", JSON.stringify(usuario.dni));
+                                                localStorage.setItem("dni", JSON.stringify(usuario.correo_electronico));
                                                 localStorage.setItem("contrasenya", JSON.stringify(usuario.contrasenya));
-                                                localStorage.setItem("tipousuario", JSON.stringify("alumno"));
+                                                localStorage.setItem("tipousuario", JSON.stringify("admin"));
 
-                                                navigate('/'); //TODO, debe enviar a pestaña de bienvenida admin
+                                                navigate('/bienvenida/administrador');
 
                                             })
-                                            .catch(error => {
-                                                alert(error);
+                                            .catch(err => {
+                                                alert(err.message);
                                             });
                                     } else {
                                         alert("Selecciona un tipo de usuario");

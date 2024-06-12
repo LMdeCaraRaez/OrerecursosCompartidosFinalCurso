@@ -14,6 +14,7 @@ import DetalleMaterial from "./paginas/detalleMaterial";
 import AnyadirPrestamo from "./paginas/anyadirPrestamo";
 import DetallePrestamo from "./paginas/detallePrestamo";
 import EntregarPrestamo from "./paginas/entregarPrestamo";
+import BienvenidaAdministrador from "./paginas/bienvenidaAdministrador";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -24,6 +25,7 @@ root.render(
             <Route path="/" element={<Home/>}/>
             <Route path="/registrarse" element={<Registrarse/>}/>
             <Route path="/bienvenida" element={<Bienvenida/>}/>
+            <Route path="/bienvenida/administrador" element={<BienvenidaAdministrador/>}/>
             <Route path="/prueba" element={<Prueba/>}/>
             <Route path="/ver/articulos" element={<VerMateriales/>}/>
             <Route path="/ver/prestamos/:usuarioId/:tipoUsuario" element={<VerPrestamos/>}/>
