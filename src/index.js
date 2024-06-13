@@ -15,6 +15,8 @@ import AnyadirPrestamo from "./paginas/anyadirPrestamo";
 import DetallePrestamo from "./paginas/detallePrestamo";
 import EntregarPrestamo from "./paginas/entregarPrestamo";
 import BienvenidaAdministrador from "./paginas/bienvenidaAdministrador";
+import VerUsuariosAdministrador from "./paginas/verUsuariosAdministrador";
+import DetalleUsuario from "./paginas/detalleUsuario";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -29,12 +31,14 @@ root.render(
             <Route path="/prueba" element={<Prueba/>}/>
             <Route path="/ver/articulos" element={<VerMateriales/>}/>
             <Route path="/ver/prestamos/:usuarioId/:tipoUsuario" element={<VerPrestamos/>}/>
+            <Route path="/ver/usuarios/admin" element={<VerUsuariosAdministrador/>}/>
             <Route path="/editar/articulo/:articuloId" element={<EditarMaterial/>}/>
             <Route path="/crear/articulos" element={<CrearMaterial/>}/>
             <Route path="/crear/prestamo/:profesorId/:materialId" element={<AnyadirPrestamo/>}/>
             <Route path="/entregar/prestamo/:prestamoId" element={<EntregarPrestamo/>}/>
             <Route path="/detalle/articulo/:articuloId" element={<DetalleMaterial/>}/>
             <Route path="/detalle/prestamo/:prestamoId/:tipoUsuario" element={<DetallePrestamo/>}/>
+            <Route path="/detalle/usuario/:usuarioId/:tipoUsuario" element={<DetalleUsuario/>}/>
             <Route path="/correo/:correoaverificar/:tipousuario" element={<CorreoVerificado/>}/>
         </Routes>
     </Router>

@@ -125,7 +125,6 @@ function crearDatagrid(prestamos, columnasTabla, navigate, tipoUsuario) {
             pageSize={5}
             getRowClassName={(params) => {
 
-
                 if (params.row.devuelto === 0) {
                     return "noDevuelto";
                 }
