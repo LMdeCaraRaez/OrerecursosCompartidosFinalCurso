@@ -42,10 +42,10 @@ function BienvenidaAdministrador() {
                     </div>
                 </nav>
 
-                <div className="col mx-5 d-flex justify-content-center align-items-center">
-
+                <h1 className="text-center mt-5">Ventana de administrador</h1>
+                <div className="col d-flex justify-content-center align-items-center">
                     <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
-                        () => navigate("/ver/prestamos/" + "/profesor")}>
+                        () => navigate("/ver/prestamos/admin")}>
                         <div className="row p-2">
                             <p>Ver Prestamos</p>
                             <img className="" src={BASEAPI + "/lista.svg"} alt="" width="45" height="45"/>
@@ -53,7 +53,7 @@ function BienvenidaAdministrador() {
                     </button>
 
                     <button className="btn btn-primary mx-4" style={{width: '20%'}} onClick={
-                        () => navigate("/ver/articulos")}>
+                        () => navigate("/ver/materiales/admin")}>
                         <div className="row p-2">
                             <p>Ver Objetos prestables</p>
                             <img className="" src={BASEAPI + "/subir.svg"} alt="" width="45" height="45"/>

@@ -112,14 +112,13 @@ function VerUsuariosAdministrador() {
                         pageSize={5}
                         getRowClassName={(params) => {
 
-                            if (params.row.validado === 0) {
-                                return "novalidado";
-                            }
-
                             // Siempre tiene mayor jerarquía un baneado, es decir, si hay que elegir, aparece en rojo
                             if (params.row.baneado === 1) {
-
                                 return "baneado";
+                            }
+                            
+                            if (params.row.validado === 0) {
+                                return "novalidado";
                             }
                         }}
                         onCellDoubleClick={(params) => {

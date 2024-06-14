@@ -4,6 +4,19 @@ import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
 function Registrarse() {
     const [tipoUsuario, setTipoUsuario] = useState("Tipo de usuario");
 
+    const enviarCorreo = (correo, tipousuario) => {
+        fetch(BASEAPI + `/enviarcorreoverificacion/${correo}/${tipousuario}`, {
+            method: "POST",
+        }).then(res => res.text()
+            .then(res => {
+                alert("Se ha enviado un correo de verificación")
+            })
+            .catch(err => console.error(err)))
+    };
+
+
+
+
     return (
         <Fragment>
             <nav className="BarraSuperior navbar navbar-expand-lg navbar-dark bg-dark">
@@ -68,6 +81,20 @@ function Registrarse() {
                                     alert("Debe rellenar todos los campos");
                                 } else {
 
+                                    const regexTelefono = /^[0-9]{9}$/
+
+                                    const regexDni = /^[0-9]{8}[A-Za-z]$/;
+
+                                    if (!regexTelefono.test(telefono)) {
+                                        alert("El número de teléfono debe tener 9 dígitos");
+                                        return;
+                                    }
+
+                                    if (!regexDni.test(dni)) {
+                                        alert("El DNI debe tener 8 dígitos y una letra");
+                                        return;
+                                    }
+
                                     const myHeaders = new Headers();
                                     myHeaders.append("Content-Type", "application/json");
 
@@ -80,6 +107,7 @@ function Registrarse() {
                                         "contrasenya": contrasenya,
                                         "telefono": telefono
                                     });
+
                                     let tipousuario
 
 
@@ -87,57 +115,53 @@ function Registrarse() {
                                         tipousuario = "alumno"
                                         console.log("El alumno es esto: " + body);
 
-                                        fetch(BASEAPI + "/alumno/post", {
-                                            method: "POST",
-                                            headers: myHeaders,
-                                            body: body
-                                        }).then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Error al enviar los datos del alumno');
-                                            }
-                                            return response.json();
-                                        })
-                                            .then(data => {
-                                                console.log(data);
-                                                alert('Los datos del alumno se han enviado correctamente');
+                                        if (tipoUsuario === "Alumno") {
+                                            fetch(BASEAPI + "/alumno/post", {
+                                                method: "POST",
+                                                headers: myHeaders,
+                                                body: body
                                             })
-                                            .catch(error => {
-                                                console.error('Error:', error);
-                                                alert('Ha ocurrido un error al enviar los datos del alumno');
-                                            });
+                                                .then(response => {
+                                                    if (!response.ok) {
+                                                        throw new Error('Error en la solicitud');
+                                                    }
+                                                    return response.json();
+                                                })
+                                                .then(data => {
+                                                    alert('Los datos del alumno se han enviado correctamente');
+                                                    enviarCorreo(correo, tipousuario);
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error al enviar los datos del alumno:', error.message);
+                                                    alert('Ha ocurrido un error al enviar los datos del alumno');
+                                                });
+                                            }
                                     } else {
                                         tipousuario = "profesor"
                                         console.log("El profesor es esto: " + body);
 
-                                        fetch( BASEAPI + "/profesor/post", {
+                                        fetch(BASEAPI + "/profesor/post", {
                                             method: "POST",
                                             headers: myHeaders,
                                             body: body
-                                        }).then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Error al enviar los datos del alumno');
-                                            }
-                                            return response.json();
                                         })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    throw new Error('Error en la solicitud');
+                                                }
+                                                return response.json();
+                                            })
                                             .then(data => {
-                                                console.log(data);
-                                                alert('Los datos del profesor se han enviado correctamente');
+                                                alert('Los datos del alumno se han enviado correctamente');
+                                                enviarCorreo(correo, tipousuario);
                                             })
                                             .catch(error => {
-                                                console.error('Error:', error);
+                                                console.error('Error al enviar los datos del alumno:', error.message);
                                                 alert('Ha ocurrido un error al enviar los datos del alumno');
                                             });
                                     }
 
-                                    fetch(BASEAPI + `/enviarcorreoverificacion/${correo}/${tipousuario}`, {
-                                        method: "POST",
-                                    }).then(res => res.text()
-                                        .then(res => {
-                                            console.log(res)
 
-                                            alert("Se ha enviado un correo de verificación")
-                                        })
-                                        .catch(err => console.error(err)))
 
                                 }
                             } else alert("Debes seleccionar un tipo de usuario")

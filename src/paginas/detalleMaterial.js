@@ -5,7 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 
 function DetalleMaterial() {
     const [material, setMaterial] = useState({});
-    let {articuloId} = useParams();
+    let {articuloId, tipoUsuario} = useParams();
     const [rutaImagen, setRutaImagen] = useState();
     const navigate = useNavigate();
     const localStorageDni = JSON.parse(localStorage.getItem("dni"));
@@ -73,26 +73,27 @@ function DetalleMaterial() {
                                 </button>
                             </div>
                         </div>
-                        <button className="btn btn-primary mt-3" style={{width: "20%"}} onClick={() => {
+                        {tipoUsuario === "profesor" ?
+                            <button className="btn btn-primary mt-3" style={{width: "20%"}} onClick={() => {
 
-                            fetch(BASEAPI + "/prestamo/existe/" + articuloId, {method: "GET"})
-                                .then((response) => response.json())
-                                .then((result) => {
-                                    console.log(result)
-                                    if (JSON.parse(result) === true) {
-                                        alert("Este articulo ya está siendo prestado, no puedes volver a prestarlo")
-                                    } else {
-                                        navigate('/crear/prestamo/' + localStorageDni + "/" + articuloId)
-                                    }
-                                })
-                                .catch((error) => alert(error));
-                        }}>Crear préstamo
-                        </button>
+                                fetch(BASEAPI + "/prestamo/existe/" + articuloId, {method: "GET"})
+                                    .then((response) => response.json())
+                                    .then((result) => {
+                                        console.log(result)
+                                        if (JSON.parse(result) === true) {
+                                            alert("Este articulo ya está siendo prestado, no puedes volver a prestarlo")
+                                        } else {
+                                            navigate('/crear/prestamo/' + localStorageDni + "/" + articuloId)
+                                        }
+                                    })
+                                    .catch((error) => alert(error));
+                            }}>Crear préstamo
+                            </button> : ""}
                     </div>
                 </div>
                 <nav className="BarraInferior navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
                     <div className="container">
-                    <p className="navbar-text m-0" style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis
+                        <p className="navbar-text m-0" style={{textAlign: "center", width: "100%", fontSize: 14}}>Luis
                             Miguel de Cara Ráez - IES Oretania</p>
                     </div>
                 </nav>
