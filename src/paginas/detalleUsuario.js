@@ -89,7 +89,7 @@ function DetalleUsuario() {
                                     {usuario.baneado === 0 ?
                                         <button className="btn btn-danger bg-red my-3" onClick={() => {
 
-                                            fetch("http://localhost:9000/banear/" + tipoUsuario + "/" + usuarioId, {
+                                            fetch(BASEAPI + "/banear/" + tipoUsuario + "/" + usuarioId, {
                                                 method: "POST",
                                             })
                                                 .then((response) => response.json())
@@ -100,8 +100,22 @@ function DetalleUsuario() {
                                                 .catch((error) => console.error(error));
 
                                             fetchUsuario()
-                                        }}> Banear (Permanente)
-                                        </button> : ""}
+                                        }}> Banear
+                                        </button> : <button className="btn bg-primary bg-red my-3" onClick={() => {
+
+                                            fetch(BASEAPI + "/desbanear/" + tipoUsuario + "/" + usuarioId, {
+                                                method: "POST",
+                                            })
+                                                .then((response) => response.json())
+                                                .then((result) => {
+                                                    console.log(result)
+                                                    alert(JSON.stringify(result))
+                                                })
+                                                .catch((error) => console.error(error));
+
+                                            fetchUsuario()
+                                        }}> Desbanear
+                                        </button>}
                                 </div>
                             </div>
                         </div>
