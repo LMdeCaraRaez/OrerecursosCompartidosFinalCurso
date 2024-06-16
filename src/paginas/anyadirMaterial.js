@@ -6,7 +6,6 @@ function CrearMaterial() {
 
     const usuarioId = JSON.parse(localStorage.getItem("dni"));
 
-    const [image, setImage] = useState("");
     const [fichero, setFichero] = useState(null);
     const navigate = useNavigate();
 

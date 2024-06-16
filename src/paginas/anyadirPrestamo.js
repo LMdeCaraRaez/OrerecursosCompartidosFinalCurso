@@ -69,6 +69,11 @@ function AnyadirPrestamo() {
                         formData.append("dniAlumno", dniAlumno);
                         formData.append("dniProfesor", profesorId);
 
+                        if (!ficheros || ficheros.length === 0) {
+                            alert("Debes de subir al menos archivo");
+                            return
+                        }
+
                         if (unidades < 1) {
                             alert("Debes seleccionar una o más unidades")
                         } else {
@@ -98,6 +103,8 @@ function AnyadirPrestamo() {
 
                             document.getElementById("fileinput").value = null;
                             setFichero(null)
+
+
                         }
                     }}>Crear préstamo
                     </button>

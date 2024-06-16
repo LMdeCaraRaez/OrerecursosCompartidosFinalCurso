@@ -58,6 +58,11 @@ function EntregarPrestamo(){
                             formData.append("fechaEntrega", fechaEntrega);
                             formData.append("prestamoId", prestamoId);
 
+                            if (!ficheros || ficheros.length === 0) {
+                                alert("Debes de subir al menos archivo");
+                                return
+                            }
+
                             ficheros.forEach(file => {
                                 formData.append('images', file);
                             });

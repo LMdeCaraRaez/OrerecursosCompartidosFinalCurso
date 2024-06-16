@@ -121,7 +121,6 @@ function crearDatagrid(prestamos, columnasTabla, navigate, tipoUsuario) {
         <DataGrid
             rows={prestamos}
             columns={columnasTabla}
-
             pageSize={5}
             getRowClassName={(params) => {
 

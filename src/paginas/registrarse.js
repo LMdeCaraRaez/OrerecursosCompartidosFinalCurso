@@ -1,8 +1,10 @@
 import React, {Fragment, useState} from "react";
 import {BASEAPI, NOMBREAPP} from "../modelos/constantes";
+import {useNavigate} from "react-router-dom";
 
 function Registrarse() {
     const [tipoUsuario, setTipoUsuario] = useState("Tipo de usuario");
+    const navigate = useNavigate();
 
     const enviarCorreo = (correo, tipousuario) => {
         fetch(BASEAPI + `/enviarcorreoverificacion/${correo}/${tipousuario}`, {
@@ -82,8 +84,13 @@ function Registrarse() {
                                 } else {
 
                                     const regexTelefono = /^[0-9]{9}$/
+                                    const regexDni = /^[0-9]{8}[A-Za-z]$/
+                                    const regexCorreo =  /.*@.*\..*/
 
-                                    const regexDni = /^[0-9]{8}[A-Za-z]$/;
+                                    if (!regexCorreo.test(correo)) {
+                                        alert("Correo electrónico no válido");
+                                        return;
+                                    }
 
                                     if (!regexTelefono.test(telefono)) {
                                         alert("El número de teléfono debe tener 9 dígitos");
@@ -130,6 +137,7 @@ function Registrarse() {
                                                 .then(data => {
                                                     alert('Los datos del alumno se han enviado correctamente');
                                                     enviarCorreo(correo, tipousuario);
+                                                    navigate("/")
                                                 })
                                                 .catch(error => {
                                                     console.error('Error al enviar los datos del alumno:', error.message);
@@ -154,10 +162,12 @@ function Registrarse() {
                                             .then(data => {
                                                 alert('Los datos del alumno se han enviado correctamente');
                                                 enviarCorreo(correo, tipousuario);
+                                                navigate("/")
+
                                             })
                                             .catch(error => {
                                                 console.error('Error al enviar los datos del alumno:', error.message);
-                                                alert('Ha ocurrido un error al enviar los datos del alumno');
+                                                alert('Ha ocurrido un error al enviar los datos del alumno:' + error.message);
                                             });
                                     }
 
