@@ -157,7 +157,7 @@ function Registrarse() {
                                             })
                                             .catch(error => {
                                                 console.error('Error al enviar los datos del alumno:', error.message);
-                                                alert('Ha ocurrido un error al enviar los datos del alumno');
+                                                alert('Ha ocurrido un error al enviar los datos del alumno:' + error.message);
                                             });
                                     }
 
