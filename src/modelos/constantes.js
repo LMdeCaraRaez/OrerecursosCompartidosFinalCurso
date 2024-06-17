@@ -1,5 +1,7 @@
 export const NOMBREAPP = "Orerecursos Compartidos"
-export const BASEAPI = "http://localhost:9000"
+export const BASEAPI = window.innerWidth <= 768
+    ? 'http://192.168.100.154:9000'
+    : 'http://localhost:9000';
 
 const localeText = {
     noRowsLabel: 'No hay filas',

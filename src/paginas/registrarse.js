@@ -11,7 +11,7 @@ function Registrarse() {
             method: "POST",
         }).then(res => res.text()
             .then(res => {
-                alert("Se ha enviado un correo de verificación")
+                // alert("Se ha enviado un correo de verificación")
             })
             .catch(err => console.error(err)))
     };
@@ -160,7 +160,7 @@ function Registrarse() {
                                                 return response.json();
                                             })
                                             .then(data => {
-                                                alert('Los datos del alumno se han enviado correctamente');
+                                                alert('Los datos del alumno se han enviado correctamente, se enviará un correo de verificación al email provisto');
                                                 enviarCorreo(correo, tipousuario);
                                                 navigate("/")
 
